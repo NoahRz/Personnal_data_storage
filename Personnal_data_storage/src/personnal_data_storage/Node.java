@@ -19,4 +19,6 @@ public abstract class Node {
 
 	protected abstract ArrayList<Integer> getReachableNodesIds();
 
+	protected abstract int getCapacity();
+
 }

@@ -32,4 +32,10 @@ public class User extends Node{
 		return null;
 	}
 
+	@Override
+	protected int getCapacity() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 }

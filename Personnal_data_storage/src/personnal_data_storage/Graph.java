@@ -21,6 +21,15 @@ public class Graph {
 		this.communicationTimes = new ArrayList<CommunicationTime>();
 	}
 	
+	public void addNode(Node node) {
+		this.nodes.add(node);
+	}
+	
+	public void addData(Data data) {
+		this.data.add(data);
+	}
+	
+	
 	public void addData(Data data, User user) { 
 		// Do I have to check if the data and the user are already in the graph ? 
 		// Do I have to check if the data base is full ? 
@@ -63,6 +72,7 @@ public class Graph {
 		
 		if((this.getNode(currentSystemNodeId)).getAvailableStorage() >= data.getSize()) {
 			(this.getNode(currentSystemNodeId)).getDataIds().add(data.getId());
+			System.out.println("data added succesfully");
 		}
 		
 		else if(systemNodesToVisitIds.isEmpty()) {  // si on arrive ici ca ne veut pas dire qu'il n'y a plus d'espace dans la base de données mais que aucun noeud system ne peut contenir la donnée. 
@@ -128,7 +138,7 @@ public class Graph {
 		int capacity = 0;
 		for (Node node : nodes) {
 			if (node instanceof SystemNode)
-			capacity += ((SystemNode) node).getCapacity();
+			capacity += node.getCapacity();
 		}
 		return capacity;
 	}
@@ -136,7 +146,7 @@ public class Graph {
 	public int getAvailableStorage() {
 		int availableStorage =0;
 		for (Node node : nodes) {
-			availableStorage += ((SystemNode) node).getAvailableStorage();
+			availableStorage += node.getAvailableStorage();
 		}
 		return availableStorage; 
 	}
@@ -149,4 +159,10 @@ public class Graph {
 		}
 		return null;
 	}
+	public void displayGraph() {
+		for (Node node:nodes) {
+			System.out.println("node id :"+ (String)(node.getId() +" " +node.getReachableNodesIds()));
+		}
+	}
+	
 }
