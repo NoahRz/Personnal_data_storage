@@ -2,15 +2,14 @@ package personnal_data_storage;
 
 import java.util.ArrayList;
 
-public class SystemNode {
-	private int id;
+public class SystemNode extends Node{
 	private int capacity;
 	private ArrayList<Integer> dataIds;
 	private ArrayList<Integer> reachableNodeId; //user or other system node
 	private Graph graph;
 	
 	public SystemNode(int id, int capacity, Graph graph) {
-		this.id = id;
+		super(id);
 		this.capacity = capacity;
 		this.dataIds = new ArrayList<Integer>();
 		this.reachableNodeId = new ArrayList<Integer>();
@@ -27,10 +26,6 @@ public class SystemNode {
 			availableStorage -= graph.getData(dataId).getSize();
 		}
 		return availableStorage;
-	}
-
-	public int getId() {
-		return id;
 	}
 	
 }

@@ -9,6 +9,7 @@ public class Graph {
 	private ArrayList<SystemNode> systemNodes;
 	private ArrayList<Data> data;
 	
+	
 	public Graph() {
 		this.users = new ArrayList<User>();
 		this.systemNodes = new ArrayList<SystemNode>();
@@ -44,6 +45,9 @@ public class Graph {
 			SystemNode systemNodeCurrent) {
 		if(systemNodesToVisit.isEmpty()) {  // si on arrive ici ca ne veut pas dire qu'il n'y a plus d'espace dans la base de données mais que aucun noeud system ne peut contenir la donnée. 
 			System.out.println("there is not enough space in any System node available, please add a new one or delete some data");
+		}
+		else {
+			
 		}
 	}
 
