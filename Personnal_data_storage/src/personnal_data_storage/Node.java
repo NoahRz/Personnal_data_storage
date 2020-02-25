@@ -1,6 +1,8 @@
 package personnal_data_storage;
 
-public class Node {
+import java.util.ArrayList;
+
+public abstract class Node {
 	protected int id;
 	
 	public Node(int id) {
@@ -10,4 +12,11 @@ public class Node {
 	public int getId() {
 		return id;
 	}
+
+	protected abstract int getAvailableStorage();
+
+	protected abstract ArrayList<Integer> getDataIds();
+
+	protected abstract ArrayList<Integer> getReachableNodesIds();
+
 }

@@ -19,5 +19,17 @@ public class User extends Node{
 	public int getReachableSystemNodeId() {
 		return reachableSystemNodeId;
 	}
-	
+
+	@Override
+	protected int getAvailableStorage() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	protected ArrayList<Integer> getReachableNodesIds() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
