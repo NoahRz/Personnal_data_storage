@@ -21,16 +21,68 @@ public class Graph {
 		this.communicationTimes = new ArrayList<CommunicationTime>();
 	}
 	
-	public void addNode(Node node) {
-		this.nodes.add(node);
-	}
-	
 	public void addData(Data data) {
 		this.data.add(data);
 	}
 	
+	public void addNode(Node node) { // trying to add a node to a user
+		this.nodes.add(node);
+		
+	}
 	
-	public void addData(Data data, User user) { 
+	public void linkNodetoNode(int nodeId1, int nodeId2, double weightCommunicationTime){	// WARNING : try to replace user and snode with userId and snodeId
+		/** link a node to another node and create the link between them (communicationTime)
+		 * */
+		
+		Node node1 = this.getNode(nodeId1);
+		Node node2 = this.getNode(nodeId2);
+		
+		System.out.println("0");
+
+		
+		if ((node1 instanceof User) || (node2 instanceof User)){
+			System.out.println("01");
+			
+			System.out.println(node1 instanceof User && node1.getReachableNodesIds().isEmpty());
+
+			System.out.println(node2 instanceof User && node2.getReachableNodesIds().isEmpty());
+			
+			System.out.println(node1 instanceof User);
+			System.out.println(node1.getReachableNodesIds().isEmpty());
+
+			if (node1 instanceof User && node1.getReachableNodesIds().isEmpty()) {
+				System.out.println("1");
+				node1.addNode(nodeId2);
+				node2.addNode(nodeId1);
+				this.addCommunicationTime(new CommunicationTime(nodeId1, nodeId2, weightCommunicationTime));
+			}
+			if (node2 instanceof User && node2.getReachableNodesIds().isEmpty()) {
+				System.out.println("2");
+				node2.addNode(nodeId1);
+				node2.addNode(nodeId1);
+				this.addCommunicationTime(new CommunicationTime(nodeId1, nodeId2, weightCommunicationTime));
+			}
+		}
+		else {
+			System.out.println("02");
+			if (!node1.getReachableNodesIds().contains(nodeId2) && !node2.getReachableNodesIds().contains(nodeId2)) {
+				System.out.println("3");
+				node1.addNode(nodeId2);
+				node2.addNode(nodeId1);
+				this.addCommunicationTime(new CommunicationTime(nodeId1, nodeId2, weightCommunicationTime));
+			}
+		}
+	}
+	
+	public void linkNodetoNode(SystemNode snode, SystemNode snode1, double weightCommunicationTime) {
+		
+	}
+	
+	public void addCommunicationTime(CommunicationTime ct) {
+		this.communicationTimes.add(ct);
+	}
+	
+	public void addDataToUser(Data data, User user) { 
 		// Do I have to check if the data and the user are already in the graph ? 
 		// Do I have to check if the data base is full ? 
 		if (this.getAvailableStorage() == 0) {
@@ -64,14 +116,19 @@ public class Graph {
 		Integer currentSystemNodeId = user.getReachableSystemNodeId();
 		systemNodesToVisitIds.remove(currentSystemNodeId);
 		
-		this.addingDataAlgorithm(systemNodesToVisitIds, communicatingTimeMap, currentSystemNodeId, data);
+		this.addingDataAlgorithm(systemNodesToVisitIds, communicatingTimeMap, currentSystemNodeId, data, user);
 	}
 
 	public void addingDataAlgorithm(ArrayList<Integer> systemNodesToVisitIds, Map<Integer, Double> communicatingTimeMap,
-			Integer currentSystemNodeId, Data data) {
+			Integer currentSystemNodeId, Data data, User user) {
+		/** Use Djikstra algorithm to find the best SystemNode to add the data
+		 * 
+		 * 
+		 * */
 		
 		if((this.getNode(currentSystemNodeId)).getAvailableStorage() >= data.getSize()) {
-			(this.getNode(currentSystemNodeId)).getDataIds().add(data.getId());
+			(this.getNode(currentSystemNodeId)).getData().add(data);
+			user.addDataId(data.getId());
 			System.out.println("data added succesfully");
 		}
 		
@@ -82,7 +139,7 @@ public class Graph {
 		else {
 			
 			if((this.getNode(currentSystemNodeId)).getAvailableStorage() >= data.getSize()) {
-				(this.getNode(currentSystemNodeId)).getDataIds().add(data.getId());
+				(this.getNode(currentSystemNodeId)).getData().add(data);
 			}
 			
 			else {
@@ -111,7 +168,7 @@ public class Graph {
 				systemNodesToVisitIds.remove(closestSystemNodeId);
 				currentSystemNodeId = closestSystemNodeId;
 				
-				this.addingDataAlgorithm(systemNodesToVisitIds, communicatingTimeMap, currentSystemNodeId, data);
+				this.addingDataAlgorithm(systemNodesToVisitIds, communicatingTimeMap, currentSystemNodeId, data, user);
 				
 			}
 		}
@@ -161,7 +218,7 @@ public class Graph {
 	}
 	public void displayGraph() {
 		for (Node node:nodes) {
-			System.out.println("node id :"+ (String)(node.getId() +" " +node.getReachableNodesIds()));
+			System.out.println("node :" + node.getClass()+ "id : "+ (String)(node.getId() +" " +node.getReachableNodesIds())+ " data : " + node.getDataIds());
 		}
 	}
 	

@@ -15,10 +15,16 @@ public abstract class Node {
 
 	protected abstract int getAvailableStorage();
 
-	protected abstract ArrayList<Integer> getDataIds();
-
 	protected abstract ArrayList<Integer> getReachableNodesIds();
 
 	protected abstract int getCapacity();
+
+	protected abstract void addNode(int nodeId);
+
+	protected abstract ArrayList<Data> getData();
+	
+	protected abstract void displayData();
+	
+	protected abstract ArrayList<Integer> getDataIds();
 
 }

@@ -4,15 +4,14 @@ import java.util.ArrayList;
 
 public class User extends Node{
 	private ArrayList<Integer> dataIds;
-	private int reachableSystemNodeId; // can only communicate with one SystemNode
+	private int reachableSystemNodeId = -1 ; // can only communicate with one SystemNode WARNING: c'est oblige que ce soit un int
 	
-	public User(int id,  int reachableSystemNodeId) {
+	public User(int id) {
 		super(id);
 		this.dataIds = new ArrayList<Integer>();
-		this.reachableSystemNodeId = reachableSystemNodeId;
 	}
 
-	public ArrayList<Integer> getDataIds() {
+	protected ArrayList<Integer> getDataIds() {
 		return dataIds;
 	}
 
@@ -29,13 +28,50 @@ public class User extends Node{
 	@Override
 	protected ArrayList<Integer> getReachableNodesIds() {
 		// TODO Auto-generated method stub
-		return null;
+		ArrayList<Integer> list = new ArrayList<Integer>();
+		if (reachableSystemNodeId == -1) {  // if it's -1, that means that it's empty
+			return list;
+		}
+		else {
+			list.add(reachableSystemNodeId);
+			return list;
+		}	
 	}
-
+	
 	@Override
 	protected int getCapacity() {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	public void addSystemNode(int id) {
+		// TODO Auto-generated method stub
+		this.reachableSystemNodeId = id;
+	}
+
+	@Override
+	protected void addNode(int nodeId) {
+		// TODO Auto-generated method stub
+		this.reachableSystemNodeId = nodeId;
+		System.out.println("a");
+	}
+
+	@Override
+	protected ArrayList<Data> getData() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+
+	@Override
+	protected void displayData() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void addDataId(Integer dataId) {
+		// TODO Auto-generated method stub
+		this.dataIds.add(dataId);
 	}
 
 }

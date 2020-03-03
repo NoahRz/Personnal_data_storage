@@ -5,16 +5,14 @@ import java.util.ArrayList;
 public class SystemNode extends Node{
 	
 	private int capacity;
-	private ArrayList<Integer> dataIds;
+	private ArrayList<Data> data;
 	private ArrayList<Integer> reachableNodesIds; //Node (user or system node)
-	private Graph graph;
 	
-	public SystemNode(int id, int capacity, Graph graph) {
+	public SystemNode(int id, int capacity) {
 		super(id);
 		this.capacity = capacity;
-		this.dataIds = new ArrayList<Integer>();
+		this.data = new ArrayList<Data>();
 		this.reachableNodesIds = new ArrayList<Integer>();
-		this.graph = graph;
 	}
 
 	public int getCapacity() {
@@ -23,18 +21,45 @@ public class SystemNode extends Node{
 
 	public int getAvailableStorage() {
 		int availableStorage = capacity;
-		for (Integer dataId: dataIds) {
-			availableStorage -= graph.getData(dataId).getSize();
+		for (Data dataElement: data) {
+			availableStorage -= dataElement.getSize();
 		}
 		return availableStorage;
 	}
 	
-	public ArrayList<Integer> getDataIds(){
-		return dataIds;
+	protected ArrayList<Data> getData(){
+		return data;
 	}
 
 	public ArrayList<Integer> getReachableNodesIds() {
 		return reachableNodesIds;
+	}
+
+	@Override
+	protected void addNode(int nodeId) {
+		// TODO Auto-generated method stub
+		this.reachableNodesIds.add(nodeId);
+		System.out.println("b");
+	}
+
+	@Override
+	protected void displayData() {
+		// TODO Auto-generated method stub
+		ArrayList<Integer> liste = new ArrayList<Integer>();
+		for (Data d:data) {
+			liste.add(d.getId());
+		}
+		System.out.println(liste);
+	}
+
+	@Override
+	protected ArrayList<Integer> getDataIds() {
+		// TODO Auto-generated method stub
+		ArrayList<Integer> liste = new ArrayList<Integer>();
+		for (Data d:data) {
+			liste.add(d.getId());
+		}
+		return liste;
 	}
 	
 }
