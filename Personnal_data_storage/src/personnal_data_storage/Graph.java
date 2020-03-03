@@ -129,11 +129,11 @@ public class Graph {
 		if((this.getNode(currentSystemNodeId)).getAvailableStorage() >= data.getSize()) {
 			(this.getNode(currentSystemNodeId)).getData().add(data);
 			user.addDataId(data.getId());
-			System.out.println("data added succesfully");
+			System.out.println("Data added succesfully");
 		}
 		
 		else if(systemNodesToVisitIds.isEmpty()) {  // si on arrive ici ca ne veut pas dire qu'il n'y a plus d'espace dans la base de données mais que aucun noeud system ne peut contenir la donnée. 
-			System.out.println("there is not enough space in any System node available, please add a new one or delete some data");
+			System.out.println("There is not enough space in any System node available, please add a new one or delete some data");
 		}
 		
 		else {

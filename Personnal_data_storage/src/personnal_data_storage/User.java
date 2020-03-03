@@ -5,6 +5,7 @@ import java.util.ArrayList;
 public class User extends Node{
 	private ArrayList<Integer> dataIds;
 	private int reachableSystemNodeId = -1 ; // can only communicate with one SystemNode WARNING: c'est oblige que ce soit un int
+	// we put -1 because integer has a default value which is 0 but we start id at 0. 
 	
 	public User(int id) {
 		super(id);
