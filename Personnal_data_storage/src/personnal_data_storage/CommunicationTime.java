@@ -10,9 +10,6 @@ public class CommunicationTime { // edge between 2 node
 		this.nodesIds = new ArrayList<Integer>();
 		nodesIds.add(nodeId0);
 		nodesIds.add(nodeId1);
-//		nodes = new Node[2];
-//		nodes[0] = n0;
-//		nodes[1] = n1;
 		this.time = time;
 	}
 

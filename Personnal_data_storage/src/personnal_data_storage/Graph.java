@@ -4,18 +4,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Graph {
-//	private ArrayList<User> users;
-//	private ArrayList<SystemNode> systemNodes;
-	
+public class Graph {	
 	private ArrayList<Node> nodes;
 	private ArrayList<CommunicationTime> communicationTimes;
 	private ArrayList<Data> data;
 	
 	
 	public Graph() {
-//		this.users = new ArrayList<User>();
-//		this.systemNodes = new ArrayList<SystemNode>();
 		this.nodes = new ArrayList<Node>();
 		this.data = new ArrayList<Data>();
 		this.communicationTimes = new ArrayList<CommunicationTime>();
@@ -38,7 +33,6 @@ public class Graph {
 		Node node2 = this.getNode(nodeId2);
 		
 		System.out.println("0");
-
 		
 		if ((node1 instanceof User) || (node2 instanceof User)){
 			System.out.println("01");
@@ -122,14 +116,12 @@ public class Graph {
 	public void addingDataAlgorithm(ArrayList<Integer> systemNodesToVisitIds, Map<Integer, Double> communicatingTimeMap,
 			Integer currentSystemNodeId, Data data, User user) {
 		/** Use Djikstra algorithm to find the best SystemNode to add the data
-		 * 
-		 * 
 		 * */
 		
 		if((this.getNode(currentSystemNodeId)).getAvailableStorage() >= data.getSize()) {
 			(this.getNode(currentSystemNodeId)).getData().add(data);
 			user.addDataId(data.getId());
-			System.out.println("Data added succesfully");
+			System.out.println("Data "+ data.getId() +" added succesfully");
 		}
 		
 		else if(systemNodesToVisitIds.isEmpty()) {  // si on arrive ici ca ne veut pas dire qu'il n'y a plus d'espace dans la base de données mais que aucun noeud system ne peut contenir la donnée. 
