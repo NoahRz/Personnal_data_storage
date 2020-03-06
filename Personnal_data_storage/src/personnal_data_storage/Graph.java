@@ -84,12 +84,19 @@ public class Graph {
 		}
 		else {
 			// Dijkstra
-			this.addingData(data, user);
-			//System.out.println("Data added succesfully");		*** pas forcement
+			Node node = this.getMostOptimizedNode(data, user);
+			if (node != null){
+				node.getData().add(data);
+				user.addDataId(data.getId());
+				System.out.println("Data added succesfully");
+			}
+			else {
+				System.out.println("There is not enough space in any System node available, please add a new one or delete some data");
+			}
 		}
 	}
 	
-	public void addingData(Data data, User user) { //Dijsktra
+	public Node getMostOptimizedNode(Data data, User user) { //Dijsktra
 		
 		ArrayList<Integer> systemNodesToVisitIds = new ArrayList<Integer>(); 
 		// Array of system node to visit's id
@@ -106,63 +113,53 @@ public class Graph {
 			communicatingTimeMap.put(snId, Double.POSITIVE_INFINITY);
 		}
 		
-		//SystemNode systemNodeCurrent = (SystemNode) this.getNode(user.getReachableSystemNodeId());
 		Integer currentSystemNodeId = user.getReachableSystemNodeId();
 		systemNodesToVisitIds.remove(currentSystemNodeId);
 		
-		this.addingDataAlgorithm(systemNodesToVisitIds, communicatingTimeMap, currentSystemNodeId, data, user);
+		return this.getMostOptimizedNodeAlgorithm(systemNodesToVisitIds, communicatingTimeMap, currentSystemNodeId, data, user);
 	}
 
-	public void addingDataAlgorithm(ArrayList<Integer> systemNodesToVisitIds, Map<Integer, Double> communicatingTimeMap,
+	public Node getMostOptimizedNodeAlgorithm(ArrayList<Integer> systemNodesToVisitIds, Map<Integer, Double> communicatingTimeMap,
 			Integer currentSystemNodeId, Data data, User user) {
 		/** Use Djikstra algorithm to find the best SystemNode to add the data
 		 * */
 		
 		if((this.getNode(currentSystemNodeId)).getAvailableStorage() >= data.getSize()) {
-			(this.getNode(currentSystemNodeId)).getData().add(data);
-			user.addDataId(data.getId());
-			System.out.println("Data "+ data.getId() +" added succesfully");
+			
+			return (this.getNode(currentSystemNodeId));
 		}
 		
 		else if(systemNodesToVisitIds.isEmpty()) {  // si on arrive ici ca ne veut pas dire qu'il n'y a plus d'espace dans la base de données mais que aucun noeud system ne peut contenir la donnée. 
-			System.out.println("There is not enough space in any System node available, please add a new one or delete some data");
+			return null;
+			
 		}
 		
 		else {
+			//update the communication time from the user to each unvisited system node next to the current system node
 			
-			if((this.getNode(currentSystemNodeId)).getAvailableStorage() >= data.getSize()) {
-				(this.getNode(currentSystemNodeId)).getData().add(data);
-			}
-			
-			else {
-				
-				//update the communication time from the user to each unvisited system node next to the current system node
-				
-				for (Integer systemNodeNeighbourId: this.getNode(currentSystemNodeId).getReachableNodesIds()) {
-					if (systemNodesToVisitIds.contains(systemNodeNeighbourId)) {
-						Double communicatingTime = communicatingTimeMap.get(currentSystemNodeId) + this.getCommunicationTime(currentSystemNodeId, systemNodeNeighbourId);
-						if (communicatingTime < communicatingTimeMap.get(systemNodeNeighbourId)) {
-							communicatingTimeMap.replace(systemNodeNeighbourId, communicatingTime);
-						}
+			for (Integer systemNodeNeighbourId: this.getNode(currentSystemNodeId).getReachableNodesIds()) {
+				if (systemNodesToVisitIds.contains(systemNodeNeighbourId)) {
+					Double communicatingTime = communicatingTimeMap.get(currentSystemNodeId) + this.getCommunicationTime(currentSystemNodeId, systemNodeNeighbourId);
+					if (communicatingTime < communicatingTimeMap.get(systemNodeNeighbourId)) {
+						communicatingTimeMap.replace(systemNodeNeighbourId, communicatingTime);
 					}
 				}
-				//find the closest unvisited system node from the user (in time)
-				Double minTime = Double.POSITIVE_INFINITY;
-				Integer closestSystemNodeId = systemNodesToVisitIds.get(0);
-				
-				for(Integer systemNodeId:systemNodesToVisitIds) { // To optimize, don't check the index 0
-					if (communicatingTimeMap.get(systemNodeId) < minTime) {
-						minTime = communicatingTimeMap.get(systemNodeId);
-						closestSystemNodeId =  systemNodeId;
-					}
-				}
-				// recursion
-				systemNodesToVisitIds.remove(closestSystemNodeId);
-				currentSystemNodeId = closestSystemNodeId;
-				
-				this.addingDataAlgorithm(systemNodesToVisitIds, communicatingTimeMap, currentSystemNodeId, data, user);
-				
 			}
+			//find the closest unvisited system node from the user (in time)
+			Double minTime = Double.POSITIVE_INFINITY;
+			Integer closestSystemNodeId = systemNodesToVisitIds.get(0);
+			
+			for(Integer systemNodeId:systemNodesToVisitIds) { // To optimize, don't check the index 0
+				if (communicatingTimeMap.get(systemNodeId) < minTime) {
+					minTime = communicatingTimeMap.get(systemNodeId);
+					closestSystemNodeId =  systemNodeId;
+				}
+			}
+			// recursion
+			systemNodesToVisitIds.remove(closestSystemNodeId);
+			currentSystemNodeId = closestSystemNodeId;
+			
+			return this.getMostOptimizedNodeAlgorithm(systemNodesToVisitIds, communicatingTimeMap, currentSystemNodeId, data, user);
 		}
 	}
 
