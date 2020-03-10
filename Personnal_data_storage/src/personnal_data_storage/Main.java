@@ -74,16 +74,63 @@ public class Main {
 		graph.displayGraph();
 	}
 	
+	public static void question3() {
+		Graph graph = new Graph();
+		SystemNode sn0 = new SystemNode(0, 3); // index and capacity
+		SystemNode sn1 = new SystemNode(3,3);
+		User user1 = new User(1);
+		User user2 = new User(6);
+		
+		Data data1 = new Data(2, 2);
+		Data data2 = new Data(4, 2);
+		Data data3 = new Data(5,2);
+		
+		graph.addNode(user1);
+		
+		graph.addNode(user2);
+		
+		graph.addNode(sn0);
+		graph.addNode(sn1);
+		
+		graph.addData(data1);
+		graph.addData(data2);
+		
+		graph.linkNodetoNode(user1.getId(), sn0.getId(), 1);
+		graph.linkNodetoNode(sn0.getId(), sn1.getId(), 1); 
+		
+		graph.linkNodetoNode(user2.getId(), sn1.getId(), 1); // PROBLEME ICI , inverse ne marche pas
+		
+		graph.addDataToUser(data1, user1);
+		//graph.addDataToUser(data2, user1);
+		//graph.addDataToUser(data3, user1);
+		graph.displayGraph();
+		System.out.println(graph.getMostOptimizedNodeForTwoUsers(data2, user1,user2).getId());
+		
+//		
+//		ArrayList<Node> shortestPath = graph.getShortestPath(sn1, user2);
+//		ArrayList<Integer> path = new ArrayList<Integer>();
+//		for(Node node:shortestPath) {
+//			path.add(node.getId());
+//		}
+//		System.out.println(path);
+}
+	
+	// user1(1) - sn0(0) - sn1(3)
+	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		
 		//test0();
 		
 		//Question 2  Add a bunch of data from arrayList one by one to a user in the graph 
-		Data data1 = new Data(2, 2);
-		Data data2 = new Data(4, 2); // notice the the order of data by id (not ascending order)
-		Data data3 = new Data(5,2);
-		ArrayList<Data> data = new ArrayList<>(Arrays.asList(data3, data2, data1));
-		question2(data);
+//		Data data1 = new Data(2, 2);
+//		Data data2 = new Data(4, 2); // notice the the order of data by id (not ascending order)
+//		Data data3 = new Data(5,2);
+//		ArrayList<Data> data = new ArrayList<>(Arrays.asList(data3, data2, data1));
+//		question2(data);
+		
+		// Question 3
+		question3();
+		
 	}
 }
