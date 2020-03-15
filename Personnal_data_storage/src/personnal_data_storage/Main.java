@@ -5,37 +5,6 @@ import java.util.Arrays;
 import java.util.Collections;
 
 public class Main {
-	
-	public static void test0() {
-		Graph graph = new Graph();
-		SystemNode sn0 = new SystemNode(0, 3); // index and capacity
-		SystemNode sn1 = new SystemNode(3,3);
-		User user1 = new User(1);
-		
-		Data data1 = new Data(2, 2);
-		Data data2 = new Data(4, 2);
-		Data data3 = new Data(5,2);
-		
-		graph.addNode(user1);
-		
-		graph.addNode(sn0);
-		graph.addNode(sn1);
-		
-		graph.addData(data1);
-		graph.addData(data2);
-		
-		graph.linkNodetoNode(user1.getId(), sn0.getId(), 1);
-		graph.linkNodetoNode(sn0.getId(), sn1.getId(), 1);
-		
-		graph.addDataToUser(data1, user1);
-		graph.addDataToUser(data2, user1);
-		graph.addDataToUser(data3, user1);
-		
-		System.out.println(new ArrayList<Integer>());
-		System.out.println(user1.getReachableNodesIds());
-		System.out.println(user1.getReachableSystemNodeId());
-		graph.displayGraph();
-	}
 
 	public static void question2(ArrayList<Data> data) {
 		/**
@@ -43,19 +12,8 @@ public class Main {
 		 * param data: ArrayList of Data*/
 		
 		//Initialisation
-		Graph graph = new Graph();
-		SystemNode sn0 = new SystemNode(0, 3); // index and capacity
-		SystemNode sn1 = new SystemNode(3,3);
-		User user1 = new User(1);
-		
-		graph.addNode(user1);	
-		graph.addNode(sn0);
-		graph.addNode(sn1);
-		
-		
-		graph.linkNodetoNode(user1.getId(), sn0.getId(), 1);
-		graph.linkNodetoNode(sn0.getId(), sn1.getId(), 1);
-		
+		Graph graph = graph();
+		User user1 = (User)graph.getNode(1);
 		// sort the array of data by id
 		ArrayList<Integer> ids = new ArrayList<Integer>();
 		for (Data d: data) {
@@ -75,62 +33,66 @@ public class Main {
 	}
 	
 	public static void question3() {
+		/*
+		 * add a data interested by two user
+		 * graph : User1 - sn0 - sn1 - user2
+		 * */
+		Graph graph = graph();
+		User user1 = (User) graph.getNode(1);
+		User user2 = (User) graph.getNode(6);
+		Data data1 = graph.getData(2);
+		Data data2 = graph.getData(4);
+		graph.addDataToUser(data1, user1);
+		graph.displayGraph();
+
+		System.out.println(graph.getMostOptimizedNodeForTwoUsers(data2, user1,user2).getId());
+}
+
+	public static Graph graph(){
+		/**
+		 * return a graph ex: graph : User1 - sn0 - sn1 - user2
+		 * without any data stored in any SystemNode
+		 * @return graph
+		 */
 		Graph graph = new Graph();
 		SystemNode sn0 = new SystemNode(0, 3); // index and capacity
 		SystemNode sn1 = new SystemNode(3,3);
+
 		User user1 = new User(1);
 		User user2 = new User(6);
-		
+
 		Data data1 = new Data(2, 2);
 		Data data2 = new Data(4, 2);
-		Data data3 = new Data(5,2);
-		
+
 		graph.addNode(user1);
-		
 		graph.addNode(user2);
-		
+
 		graph.addNode(sn0);
 		graph.addNode(sn1);
-		
+
 		graph.addData(data1);
 		graph.addData(data2);
-		
+
 		graph.linkNodetoNode(user1.getId(), sn0.getId(), 1);
-		graph.linkNodetoNode(sn0.getId(), sn1.getId(), 1); 
-		
-		graph.linkNodetoNode(user2.getId(), sn1.getId(), 1); // PROBLEME ICI , inverse ne marche pas
-		
-		graph.addDataToUser(data1, user1);
-		//graph.addDataToUser(data2, user1);
-		//graph.addDataToUser(data3, user1);
-		graph.displayGraph();
-		System.out.println(graph.getMostOptimizedNodeForTwoUsers(data2, user1,user2).getId());
-		
-//		
-//		ArrayList<Node> shortestPath = graph.getShortestPath(sn1, user2);
-//		ArrayList<Integer> path = new ArrayList<Integer>();
-//		for(Node node:shortestPath) {
-//			path.add(node.getId());
-//		}
-//		System.out.println(path);
-}
-	
-	// user1(1) - sn0(0) - sn1(3)
-	
+		graph.linkNodetoNode(sn0.getId(), sn1.getId(), 1);
+		graph.linkNodetoNode(sn1.getId(), user2.getId(), 1);
+
+		return graph;
+	}
+
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		
-		//test0();
-		
-		//Question 2  Add a bunch of data from arrayList one by one to a user in the graph 
+		//Question 2  Add a bunch of data from arrayList one by one to a user in the graph
 //		Data data1 = new Data(2, 2);
 //		Data data2 = new Data(4, 2); // notice the the order of data by id (not ascending order)
 //		Data data3 = new Data(5,2);
 //		ArrayList<Data> data = new ArrayList<>(Arrays.asList(data3, data2, data1));
 //		question2(data);
-		
+
 		// Question 3
 		question3();
-		
+
 	}
+
 }

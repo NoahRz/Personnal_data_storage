@@ -44,7 +44,7 @@ public class Graph {
 		return null;
 	}
 
-	private Node getNode(int id) {
+	public Node getNode(int id) {
 		/**
 		 * return the Node corresponding to the id
 		 * @param id: int
@@ -107,40 +107,40 @@ public class Graph {
 		 * @param weightCommunicationTime: double
 		 * */
 		
-		Node node1 = this.getNode(nodeId0);
-		Node node2 = this.getNode(nodeId1);
+		Node node0 = this.getNode(nodeId0);
+		Node node1 = this.getNode(nodeId1);
 		
 		System.out.println("0");
 		
-		if ((node1 instanceof User) || (node2 instanceof User)){
+		if ((node0 instanceof User) || (node1 instanceof User)){
 			System.out.println("01");
 			
+			System.out.println(node0 instanceof User && node0.getReachableNodesIds().isEmpty());
+
 			System.out.println(node1 instanceof User && node1.getReachableNodesIds().isEmpty());
-
-			System.out.println(node2 instanceof User && node2.getReachableNodesIds().isEmpty());
 			
-			System.out.println(node1 instanceof User);
-			System.out.println(node1.getReachableNodesIds().isEmpty());
+			System.out.println(node0 instanceof User);
+			System.out.println(node0.getReachableNodesIds().isEmpty());
 
-			if (node1 instanceof User && node1.getReachableNodesIds().isEmpty()) {
+			if (node0 instanceof User && node0.getReachableNodesIds().isEmpty()) {
 				System.out.println("1");
-				node1.addNode(nodeId1);
-				node2.addNode(nodeId0);
+				node0.addNode(nodeId1);
+				node1.addNode(nodeId0);
 				this.addCommunicationTime(new CommunicationTime(nodeId0, nodeId1, weightCommunicationTime));
 			}
-			if (node2 instanceof User && node2.getReachableNodesIds().isEmpty()) {
+			if (node1 instanceof User && node1.getReachableNodesIds().isEmpty()) {
 				System.out.println("2");
-				node2.addNode(nodeId0);
-				node2.addNode(nodeId0);
+				node1.addNode(nodeId0);
+				node0.addNode(nodeId1);
 				this.addCommunicationTime(new CommunicationTime(nodeId0, nodeId1, weightCommunicationTime));
 			}
 		}
 		else {
 			System.out.println("02");
-			if (!node1.getReachableNodesIds().contains(nodeId1) && !node2.getReachableNodesIds().contains(nodeId1)) {
+			if (!node0.getReachableNodesIds().contains(nodeId1) && !node1.getReachableNodesIds().contains(nodeId1)) {
 				System.out.println("3");
-				node1.addNode(nodeId1);
-				node2.addNode(nodeId0);
+				node0.addNode(nodeId1);
+				node1.addNode(nodeId0);
 				this.addCommunicationTime(new CommunicationTime(nodeId0, nodeId1, weightCommunicationTime));
 			}
 		}
