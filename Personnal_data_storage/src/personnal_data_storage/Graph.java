@@ -110,35 +110,22 @@ public class Graph {
 		Node node0 = this.getNode(nodeId0);
 		Node node1 = this.getNode(nodeId1);
 		
-		System.out.println("0");
-		
-		if ((node0 instanceof User) || (node1 instanceof User)){
-			System.out.println("01");
-			
-			System.out.println(node0 instanceof User && node0.getReachableNodesIds().isEmpty());
 
-			System.out.println(node1 instanceof User && node1.getReachableNodesIds().isEmpty());
-			
-			System.out.println(node0 instanceof User);
-			System.out.println(node0.getReachableNodesIds().isEmpty());
+		if ((node0 instanceof User) || (node1 instanceof User)){
 
 			if (node0 instanceof User && node0.getReachableNodesIds().isEmpty()) {
-				System.out.println("1");
 				node0.addNode(nodeId1);
 				node1.addNode(nodeId0);
 				this.addCommunicationTime(new CommunicationTime(nodeId0, nodeId1, weightCommunicationTime));
 			}
 			if (node1 instanceof User && node1.getReachableNodesIds().isEmpty()) {
-				System.out.println("2");
 				node1.addNode(nodeId0);
 				node0.addNode(nodeId1);
 				this.addCommunicationTime(new CommunicationTime(nodeId0, nodeId1, weightCommunicationTime));
 			}
 		}
 		else {
-			System.out.println("02");
 			if (!node0.getReachableNodesIds().contains(nodeId1) && !node1.getReachableNodesIds().contains(nodeId1)) {
-				System.out.println("3");
 				node0.addNode(nodeId1);
 				node1.addNode(nodeId0);
 				this.addCommunicationTime(new CommunicationTime(nodeId0, nodeId1, weightCommunicationTime));
@@ -173,7 +160,7 @@ public class Graph {
 	
 	public Node getMostOptimizedNode(Data data, User user) { //Dijsktra
 		/*
-		 * return the most optimized node to store the data intreseted by only one user
+		 * return the most optimized node to store the data interested by only one user
 		 * @param data: Data
 		 * @param user: User
 		 * @return : Node
@@ -454,7 +441,6 @@ public class Graph {
 		 * @return Node
 		 * */
 
-		System.out.println(this.getMostOptimizedNodeWithTime(data, user0));
 		ArrayList<Node> list = new ArrayList<Node>(this.getMostOptimizedNodeWithTime(data, user0).keySet());
 		System.out.println(list.get(0).getId());
 		Node midNode = (Node) this.getMostOptimizedNodeWithTime(data, user0).keySet().toArray()[0]; // need to have the time to get to midNode -> d1
@@ -496,6 +482,26 @@ public class Graph {
 		return midNode;
 	}
 
+	public void addDataToUserOptimized(ArrayList<Data> data) { //knapsack problem
+		/*
+		* Algorithm :
+		* - find the node directly connected to the user, check if it has enough space to carry all the dad - Yes : finished
+		* - No : find the best data (can be several) which can be stored there
+		* - once finished, look for the closest Node from the user (Djikstra)
+		* - do the same things for this Node (knapsack)
+		* - look for the closest from the user (Djikstra)
+		* - do the same things for this Node (knapsack)
+		* - etc.
+		* */
+	}
+
+	public void knapsack(SystemNode sNode,ArrayList<Data> data ){
+		/**
+		 * do the knapsack problem to this snode and return an ArrayList of data which couldn't be added
+		 * @param sNode : SystemNode
+		 * @param data : ArrayList<Data>
+		 */
+	}
 }
 	
 	

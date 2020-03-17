@@ -82,13 +82,21 @@ public class Main {
 
 	public static void question4(){ //knapsack problem
 		/*
-		* Optimization using Multiple knapsack problem*/
+		* Optimization using Multiple knapsack problem
+		* from a bunch of data interested by one user, find the best place to add the data to maximize the SystemNodes.
+		* the data have to be added the closest to the user
+		* */
 
 		/*
 		* Sketch :
 		* weight : in my case it's the size of the data
-		* value : */
+		* value : equal one */
+		Data data1 = new Data(2, 2);
+		Data data2 = new Data(4, 2); // notice the the order of data by id (not ascending order)
+		Data data3 = new Data(5,2);
+		ArrayList<Data> data = new ArrayList<>(Arrays.asList(data3, data2, data1));
 		Graph graph = graph();
+		graph.addDataToUserOptimized(data); // knapsack problem
 	}
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
