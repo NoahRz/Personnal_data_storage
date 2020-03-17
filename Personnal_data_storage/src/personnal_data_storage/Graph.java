@@ -482,17 +482,28 @@ public class Graph {
 		return midNode;
 	}
 
-	public void addDataToUserOptimized(ArrayList<Data> data) { //knapsack problem
+	public void addDataToUserOptimized(User user,ArrayList<Data> data) { //knapsack problem
 		/*
 		* Algorithm :
-		* - find the node directly connected to the user, check if it has enough space to carry all the dad - Yes : finished
-		* - No : find the best data (can be several) which can be stored there
+		* - find the node directly connected to the user, do a knapsack on it.
+		*  ((check if it has enough space to carry all the dad - Yes : finished
+		* - No : find the best data (can be several) which can be stored there)) -> not good
 		* - once finished, look for the closest Node from the user (Djikstra)
 		* - do the same things for this Node (knapsack)
 		* - look for the closest from the user (Djikstra)
 		* - do the same things for this Node (knapsack)
 		* - etc.
 		* */
+		if (this.getAvailableStorage() == 0) {
+			System.out.println("The data base is full, please add a new system node or delete some data");
+		}
+		else {
+			While (!data.isEmpty()){
+				SystemNode currentSNode = this.getClosestSNodeFromUserNotYetVisited(user, listNodeToVisit); // peut pas plus optimiser -> prendre le djikstra
+				this.knapsack(currentSNnode, data);
+			}
+		}
+
 	}
 
 	public void knapsack(SystemNode sNode,ArrayList<Data> data ){
@@ -501,6 +512,8 @@ public class Graph {
 		 * @param sNode : SystemNode
 		 * @param data : ArrayList<Data>
 		 */
+
+
 	}
 }
 	
