@@ -6,48 +6,6 @@ import java.util.Collections;
 
 public class Main {
 
-	public static void question2(ArrayList<Data> data) {
-		/**
-		 * Add a bunch of data one by one to a user in the graph 
-		 * param data: ArrayList of Data*/
-		
-		//Initialisation
-		Graph graph = graph();
-		User user1 = (User)graph.getNode(1);
-		// sort the array of data by id
-		ArrayList<Integer> ids = new ArrayList<Integer>();
-		for (Data d: data) {
-			ids.add(d.getId());
-		}
-		Collections.sort(ids);
-		
-		for(Integer id:ids) {
-			for(Data d:data) {
-				if (d.getId()==id) {
-					graph.addData(d);
-					graph.addDataToUser(d, user1);
-				}
-			}
-		}
-		graph.displayGraph();
-	}
-	
-	public static void question3() {
-		/*
-		 * add a data interested by two user
-		 * graph : User1 - sn0 - sn1 - user2
-		 * */
-		Graph graph = graph();
-		User user1 = (User) graph.getNode(1);
-		User user2 = (User) graph.getNode(6);
-		Data data1 = graph.getData(2);
-		Data data2 = graph.getData(4);
-		graph.addDataToUser(data1, user1);
-		graph.displayGraph();
-
-		System.out.println(graph.getMostOptimizedNodeForTwoUsers(data2, user1,user2).getId());
-}
-
 	public static Graph graph(){
 		/**
 		 * return a graph ex: graph : User1 - sn0 - sn1 - user2
@@ -80,6 +38,58 @@ public class Main {
 		return graph;
 	}
 
+	public static void question2(ArrayList<Data> data) {
+		/**
+		 * Add a bunch of data one by one to a user in the graph 
+		 * param data: ArrayList of Data*/
+		//Initialisation
+		Graph graph = graph();
+		User user1 = (User)graph.getNode(1);
+
+		ArrayList<Integer> ids = new ArrayList<Integer>(); // ArrayList of data's ids
+		for (Data d: data) {
+			ids.add(d.getId());
+		}
+		// sort the ArrayList of data's ids
+		Collections.sort(ids);
+		
+		for(Integer id:ids) {
+			for(Data d:data) {
+				if (d.getId()==id) {
+					graph.addData(d);
+					graph.addDataToUser(d, user1);
+				}
+			}
+		}
+		graph.displayGraph();
+	}
+	
+	public static void question3() {
+		/*
+		 * add a data interested by two user
+		 * graph : User1 - sn0 - sn1 - user2
+		 * */
+		Graph graph = graph();
+		User user1 = (User) graph.getNode(1);
+		User user2 = (User) graph.getNode(6);
+		Data data1 = graph.getData(2);
+		Data data2 = graph.getData(4);
+		graph.addDataToUser(data1, user1);
+		graph.displayGraph();
+
+		System.out.println(graph.getMostOptimizedNodeForTwoUsers(data2, user1,user2).getId());
+}
+
+	public static void question4(){ //knapsack problem
+		/*
+		* Optimization using Multiple knapsack problem*/
+
+		/*
+		* Sketch :
+		* weight : in my case it's the size of the data
+		* value : */
+		Graph graph = graph();
+	}
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		
@@ -92,6 +102,8 @@ public class Main {
 
 		// Question 3
 		question3();
+
+		// Question 4 - Knapsack problem
 
 	}
 
