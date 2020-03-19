@@ -500,7 +500,7 @@ public class Graph {
 		else {
 			While (!data.isEmpty()){
 				SystemNode currentSNode = this.getClosestSNodeFromUserNotYetVisited(user, listNodeToVisit); // peut pas plus optimiser -> prendre le djikstra
-				this.knapsack(currentSNnode, data);
+				currentSNode.addOptimizedData(data);
 			}
 		}
 
