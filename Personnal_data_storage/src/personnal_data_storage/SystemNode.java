@@ -76,7 +76,7 @@ public class SystemNode extends Node{
 		 * */
 		int n = listOfData.size();
 		ArrayList<Data> newListOfData = new ArrayList<Data>();
-		newListOfData.add(null);
+		newListOfData.add(new Data(-1, -1)); // add this data at the beginning so that the last index is equal to the size of the list
 		for (Data d: listOfData){
 			newListOfData.add(d);
 		}
@@ -114,29 +114,43 @@ public class SystemNode extends Node{
 		 * @param prev : HashMap<Data, Boolean> gathering all the data to get to the current data and show if the data has been added in the systemNode (true or false)
 		 * */
 
-		if (prev == null){
-				prev = new HashMap<Data, Boolean>();
-			}
-			if (n== 0 || capacity==0){
-				resultPathKnapSack.add(prev);
-				return 0;
-			}
-			else if (listOfData.get(n).getSize()>capacity){
-				HashMap<Data, Boolean> prev0 = prev;
-				prev0.put(listOfData.get(n), false);
-				return this.knapsack(listOfData, n-1, capacity, prev0);
-			}
-			else{
-				HashMap<Data, Boolean> prev1 = prev;
-				prev1.put(listOfData.get(n), false);
-				int temp1 = this.knapsack(listOfData, n-1, capacity, prev1);
+		// we check for all the combination like if we were going through a binary tree (Yes/No)
 
-				HashMap<Data, Boolean> prev2 = prev;
-				prev2.put(listOfData.get(n), true);
-				int temp2 = this.knapsack(listOfData, n-1, capacity - listOfData.get(n).getSize(), prev2);
-				return Math.max(temp1, temp2);
+		if (prev == null){
+				prev = new HashMap<>();
+		}
+		if (n==0 || capacity==0){ // means there we check fot all the data or there is no more space
+			resultPathKnapSack.add(prev); // add the path (binary tree) to a resultPathKnapSack which gather all the paths (possibility
+			return 0; // don't think it's necessary to return an integer
+		}
+		else if (listOfData.get(n).getSize()>capacity){
+			HashMap<Data, Boolean> prev0 = new HashMap<>(); // create a new branch from the previous path
+			for (Data d:prev.keySet()){ // add the prev path to this new path (branch)
+				prev0.put(d, prev.get(d));
 			}
+			prev0.put(listOfData.get(n), false); // we don't add the data in the systemNode
+			return this.knapsack(listOfData, n-1, capacity, prev0);
+		}
+		else{
+			HashMap<Data, Boolean> prev1 = new HashMap<>();// create a new branch from the previous path
+			for (Data d:prev.keySet()){
+				prev1.put(d, prev.get(d));
+			}
+			prev1.put(listOfData.get(n), false); // we don't add the data in the systemNode
+			int temp1 = this.knapsack(listOfData, n-1, capacity, prev1);
+
+			HashMap<Data, Boolean> prev2 = new HashMap<>();// create a new branch from the previous path
+			for (Data d:prev.keySet()){
+				prev2.put(d, prev.get(d));
+			}
+			prev2.put(listOfData.get(n), true); // we add the data in the systemNode
+			int temp2 = this.knapsack(listOfData, n-1, capacity - listOfData.get(n).getSize(), prev2); //update the new capacity
+			return Math.max(temp1, temp2);
+		}
 
 	}
-	
+
+	public ArrayList<HashMap<Data, Boolean>> getResultPathKnapSack() {
+		return resultPathKnapSack;
+	}
 }
