@@ -506,6 +506,23 @@ public class Graph {
 //
 //	}
 
+	// Question 4
+	/**
+	 * Purpose: we want to optimize the adding of a bunch of data to a user using knapsack
+	 * process :
+	 * 1) from the user, we select the closest SystemNode using djiktra
+	 * 2) try to put data using knapsack (in the djikstra algorithm
+	 * 3) repeat step 1 and 2 until we have visited all the SystemNode or all the data have been stored.
+	*/
+
+	public SystemNode getClosestSNodeFromUserNotYetVisited(User user, ArrayList<Data> llistOfData){
+		/**
+		 * return the closest SystemNode to visit from the user which has not been visited yet using djikstra algorithm
+		 * */
+
+		return null;
+	}
+
 	public void knapsack(SystemNode sNode,ArrayList<Data> data ){
 		/**
 		 * do the knapsack problem to this snode and return an ArrayList of data which couldn't be added

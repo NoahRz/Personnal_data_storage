@@ -28,6 +28,11 @@ public class User extends Node{
 
 	@Override
 	protected ArrayList<Integer> getReachableNodesIds() {
+		/**
+		 * return the reachableNodeIds in a list
+		 * @return ArrayList<Integer>
+		 **/
+
 		// TODO Auto-generated method stub
 		ArrayList<Integer> list = new ArrayList<Integer>();
 		if (reachableSystemNodeId == -1) {  // if it's -1, that means that it's empty
@@ -54,7 +59,6 @@ public class User extends Node{
 	protected void addNode(int nodeId) {
 		// TODO Auto-generated method stub
 		this.reachableSystemNodeId = nodeId;
-		System.out.println("a");
 	}
 
 	@Override
@@ -67,7 +71,6 @@ public class User extends Node{
 	@Override
 	protected void displayData() {
 		// TODO Auto-generated method stub
-		
 	}
 
 	public void addDataId(Integer dataId) {
