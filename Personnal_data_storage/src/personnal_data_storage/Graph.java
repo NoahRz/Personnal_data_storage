@@ -133,6 +133,14 @@ public class Graph {
 		}
 	}
 
+	/**
+	 * Question 2
+	 * the purpose is to add one data on the graph which is only interesting for one user
+	 * process:
+	 * 1) check if the graph has enough place to stare the data (total amount of all the systemNode)
+	 * 2) look for the systemNode which is the closest to the user and which has enough place to store the data
+	 * 3) add the to the systemNode found and the user (id)
+	 * */
 	public void addDataToUser(Data data, User user) {
 		/**
 		 * add the data to a user
@@ -148,7 +156,7 @@ public class Graph {
 			// Dijkstra
 			Node node = this.getMostOptimizedNode(data, user);
 			if (node != null){
-				node.getData().add(data);
+				node.getData().add(data); // mettre metode add(data) au systemNode ou User aussi
 				user.addDataId(data.getId());
 				System.out.println("Data added succesfully");
 			}
@@ -169,14 +177,15 @@ public class Graph {
 		ArrayList<Integer> systemNodesToVisitIds = new ArrayList<Integer>(); 
 		// Array of system node to visit's id
 		for (Node node : nodes) {
-			if (!(node instanceof User)){
+			if (!(node instanceof User)){ // we don't add users because we cannot add data to them
 				systemNodesToVisitIds.add(node.getId());
 			}
 		}
 		
-		Map<Integer,Double> communicatingTimeMap = new HashMap<Integer,Double>();  
+		Map<Integer,Double> communicatingTimeMap = new HashMap<Integer,Double>();
 		// map gathering id of system node and the shortest time to communicate from the user (id, communicatingTime)
-		
+
+		//initializing the hashMap
 		for (Integer snId : systemNodesToVisitIds) {
 			communicatingTimeMap.put(snId, Double.POSITIVE_INFINITY);
 		}
@@ -190,7 +199,7 @@ public class Graph {
 	public Node getMostOptimizedNodeAlgorithm(ArrayList<Integer> systemNodesToVisitIds, Map<Integer, Double> communicatingTimeMap,
 			Integer currentSystemNodeId, Data data) { // user parameter is no more useful
 		/*
-		 * by using Djikstra algorithm, to find and return the best SystemNode to add the data interested by only one user
+		 * Using Djikstra algorithm to find and return the best SystemNode to add the data interested by only one user
 		 * @param systemNodesToVisitIds : ArrayList<Integer>
 		 * @param communicatingTimeMap : Map<Integer, Double>
 		 * @param currentSystemNodeId : Integer
@@ -200,14 +209,14 @@ public class Graph {
 		if((this.getNode(currentSystemNodeId)).getAvailableStorage() >= data.getSize()) {
 			return (this.getNode(currentSystemNodeId));
 		}
-		else if(systemNodesToVisitIds.isEmpty()) {  // si on arrive ici ca ne veut pas dire qu'il n'y a plus d'espace dans la base de données mais que aucun noeud system ne peut contenir la donnée. 
+		else if(systemNodesToVisitIds.isEmpty()) {
+			// if we end up here that means that there sis no systemNode which has enough place to stare the data
 			return null;
 		}
 		else {
 			//update the communication time from the user to each unvisited system node next to the current system node
-			
 			for (Integer systemNodeNeighbourId: this.getNode(currentSystemNodeId).getReachableNodesIds()) {
-				if (systemNodesToVisitIds.contains(systemNodeNeighbourId)) {
+				if (systemNodesToVisitIds.contains(systemNodeNeighbourId)) { // we check for all unvisited neighbour systemNode
 					Double communicatingTime = communicatingTimeMap.get(currentSystemNodeId) + this.getCommunicationTime(currentSystemNodeId, systemNodeNeighbourId);
 					if (communicatingTime < communicatingTimeMap.get(systemNodeNeighbourId)) {
 						communicatingTimeMap.replace(systemNodeNeighbourId, communicatingTime);
@@ -234,19 +243,20 @@ public class Graph {
 
 // Question 3
 	/**
-	 * Purpose: we want to add a data interested by two user
+	 * Purpose: we want to add a data interested by two users
 	 * process :
 	 * 1) We look for the best node able to store the data which is first interested by only one user
-	 * 2) Once found, we look for the shortest path between this node and the other user
+	 * 2) Once found, we look for the shortest path between this node and the other user.
 	 * 3) The best node able to store the data for these two users can only be among the first node found and nodes in the shortest path
-	 * 4) Among those nodes we look for the closest one from the two users and which has enough space to store the data*/
+	 * 4) Among those nodes we look for the closest one from the two users and which has enough space to store the data
+	 * */
 
 	public HashMap<Node,Double> getMostOptimizedNodeWithTime(Data data, User user){
 		/**
 		 * return the best node able to store the data and the time connection from the user to the node found
 		 * @param data: Data
 		 * @param user: User
-		 * @return : HashMap<Node,Double>
+		 * @return : HashMap<Node,Double> Double is the shortest communication time between the node and the systemNode found
 		 **/
 
 		ArrayList<Integer> systemNodesToVisitIds = new ArrayList<Integer>(); 
@@ -273,7 +283,7 @@ public class Graph {
 	public HashMap<Node,Double> getMostOptimizedNodeWithTimeAlgorithm(ArrayList<Integer> systemNodesToVisitIds, Map<Integer, Double> communicatingTimeMap,
 			Integer currentSystemNodeId, Data data) { // user parameter is not useful
 		/*
-		 *  return the best node able to store the data and the time connection from the user to the node found by using Djisktra algorithm
+		 * return the closest node able to store the data and the time connection from the user to the node found by using Djisktra algorithm
 		 *@param systemNodesToVisitIds : ArrayList<Integer>
 		 *@param communicatingTimeMap : Map<Integer, Double>
 		 *@param currentSystemNodeId : Integer
@@ -282,17 +292,15 @@ public class Graph {
 		 */
 
 		if((this.getNode(currentSystemNodeId)).getAvailableStorage() >= data.getSize()) {
-			
 			HashMap<Node, Double>  res = new HashMap<Node,Double>();
 			res.put(this.getNode(currentSystemNodeId), communicatingTimeMap.get(currentSystemNodeId));
 			return res;
 		}
-		else if(systemNodesToVisitIds.isEmpty()) {  // si on arrive ici ca ne veut pas dire qu'il n'y a plus d'espace dans la base de données mais que aucun noeud system ne peut contenir la donnée. 
+		else if(systemNodesToVisitIds.isEmpty()) {
 			return null;
 		}
 		else {
 			//update the communication time from the user to each unvisited system node next to the current system node
-
 			for (Integer systemNodeNeighbourId: this.getNode(currentSystemNodeId).getReachableNodesIds()) {
 				if (systemNodesToVisitIds.contains(systemNodeNeighbourId)) {
 					Double communicatingTime = communicatingTimeMap.get(currentSystemNodeId) + this.getCommunicationTime(currentSystemNodeId, systemNodeNeighbourId);
@@ -322,13 +330,17 @@ public class Graph {
 	public ArrayList<Node> getShortestPath(Node startNode, Node endNode) {
 		/*
 		 * return the shortest path between two nodes
+		 * @param startNode : Node
+		 * @param endNode: Node
 		 * @return : ArrayList<Node>
 		 */
 
 		ArrayList<Integer> NodesToVisitIds = new ArrayList<Integer>(); 
 		// Array of system node to visit's id
 		for (Node node1 : nodes) {
-					NodesToVisitIds.add(node1.getId()); // there are also all the users, but not the startNode
+			if (node1 != startNode) { // je viens d'ajouter ca, à tester
+				NodesToVisitIds.add(node1.getId()); // there are also all the users in the ArrayList, but not the startNode
+			}
 		}
 		
 		Map<Integer,Double> communicatingTimeMap = new HashMap<Integer,Double>();  
@@ -348,6 +360,7 @@ public class Graph {
 		// ex: paths = {"Node1" : [Node2, Node3], "Node2":[Node3], ...} (exept the startNode)
 		Map<Node, Node> secondToLasts = new HashMap<Node, Node>();
 		// map gathering the node and the second to last node before this node (exept the startNode)
+		// ex : {Node0 : lastNode0, Node1 : lastNode1 , ...}
 		for (Node node1 : nodes) {
 			if (node1 != startNode) {
 				paths.put(node1, null);
@@ -369,29 +382,29 @@ public class Graph {
 		 * @param communicatingTimeMap : Map<Integer, Double>
 		 * @param currentSystemNodeId : Integer
 		 * @param paths : Map<Node, ArrayList<Node>>
-		 * @param secondToLasts : Map<Node, Node>
+		 * @param secondToLasts : Map<Node, Node>  ex: {Node:Last Node, ...}
 		 * @param endNode : Node
 		 * @return : ArrayList<Node>
 		 */
 
-		if((this.getNode(currentSystemNodeId)) == endNode) {
-			
+		if((this.getNode(currentSystemNodeId)) == endNode) { // we reach the endNode
 			ArrayList<Node> pathToGetToEndNode = paths.get(this.getNode(currentSystemNodeId));
 			pathToGetToEndNode.add(endNode);
 			return pathToGetToEndNode;
 		}
-		else if(NodesToVisitIds.isEmpty()) {  // si on arrive ici ca ne veut pas dire qu'il n'y a plus d'espace dans la base de données mais que aucun noeud system ne peut contenir la donnée. 
+		else if(NodesToVisitIds.isEmpty()) { //we've visited all the nodes
 			return null;	
 		}
 		else {
 			//update the communication time from the user to each unvisited system node next to the current system node
-			
 			for (Integer systemNodeNeighbourId: this.getNode(currentSystemNodeId).getReachableNodesIds()) {
 				if (NodesToVisitIds.contains(systemNodeNeighbourId)) {
 					Double communicatingTime = communicatingTimeMap.get(currentSystemNodeId) + this.getCommunicationTime(currentSystemNodeId, systemNodeNeighbourId);
 					if (communicatingTime < communicatingTimeMap.get(systemNodeNeighbourId)) {
 						communicatingTimeMap.replace(systemNodeNeighbourId, communicatingTime);
 						secondToLasts.replace(this.getNode(systemNodeNeighbourId), this.getNode(currentSystemNodeId));
+						// we add this currentNode to the neighbour Node's second to last because we've visited this currentNode before visiting
+						// the neighbour.
 					}
 				}
 			}
@@ -409,18 +422,21 @@ public class Graph {
 			// recursion
 			NodesToVisitIds.remove(closestSystemNodeId);
 
+			// update the path to get to the closest SystemNode from the user
 			if (paths.get(secondToLasts.get(this.getNode(closestSystemNodeId))) != null) {
-				
+				// if the path to get to the closestSystemNode's second to last is not null
+
 				ArrayList<Node> pathList = new ArrayList<Node>();
 				pathList.add(secondToLasts.get(this.getNode(closestSystemNodeId)));
 				
 				for(Node prevNode: paths.get(secondToLasts.get(this.getNode(closestSystemNodeId)))) {
-					
 					pathList.add(prevNode);
+					// we add the path to get to the closestSystemNode's second to last
 				}
 				paths.replace(this.getNode(closestSystemNodeId), pathList);
 			}
 			else {
+				// we just add the closest SystemNode's second to last
 				ArrayList<Node> pathList = new ArrayList<Node>();
 				pathList.add(secondToLasts.get(this.getNode(closestSystemNodeId)));
 				paths.replace(this.getNode(closestSystemNodeId), pathList);
