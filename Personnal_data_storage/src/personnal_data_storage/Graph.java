@@ -338,9 +338,7 @@ public class Graph {
 		ArrayList<Integer> NodesToVisitIds = new ArrayList<Integer>(); 
 		// Array of system node to visit's id
 		for (Node node1 : nodes) {
-			if (node1 != startNode) { // je viens d'ajouter ca, à tester
 				NodesToVisitIds.add(node1.getId()); // there are also all the users in the ArrayList, but not the startNode
-			}
 		}
 		
 		Map<Integer,Double> communicatingTimeMap = new HashMap<Integer,Double>();  
@@ -350,11 +348,11 @@ public class Graph {
 			if(snId != startNode.getId()) {
 				communicatingTimeMap.put(snId, Double.POSITIVE_INFINITY);
 			}
-			else {
-				communicatingTimeMap.put(snId, 0.0);
+			else{
+				communicatingTimeMap.put(snId,0.0);
 			}
 		}
-				
+
 		Map<Node, ArrayList<Node>> paths = new HashMap<Node, ArrayList<Node>>();
 		// Map gathering the shortest path to get to each Node expect the start node
 		// ex: paths = {"Node1" : [Node2, Node3], "Node2":[Node3], ...} (exept the startNode)
@@ -370,7 +368,7 @@ public class Graph {
 
 		Integer currentSystemNodeId = startNode.getId();
 		NodesToVisitIds.remove(currentSystemNodeId);
-		
+
 		return this.getShortestPathAlgorithm(NodesToVisitIds, communicatingTimeMap, currentSystemNodeId, paths, secondToLasts,  endNode);
 	}
 	
@@ -427,12 +425,14 @@ public class Graph {
 				// if the path to get to the closestSystemNode's second to last is not null
 
 				ArrayList<Node> pathList = new ArrayList<Node>();
-				pathList.add(secondToLasts.get(this.getNode(closestSystemNodeId)));
-				
+
 				for(Node prevNode: paths.get(secondToLasts.get(this.getNode(closestSystemNodeId)))) {
 					pathList.add(prevNode);
 					// we add the path to get to the closestSystemNode's second to last
 				}
+
+				pathList.add(secondToLasts.get(this.getNode(closestSystemNodeId)));//then we add the the closestSystemNode's second to last
+
 				paths.replace(this.getNode(closestSystemNodeId), pathList);
 			}
 			else {
@@ -457,41 +457,50 @@ public class Graph {
 		 * @return Node
 		 * */
 
-		ArrayList<Node> list = new ArrayList<Node>(this.getMostOptimizedNodeWithTime(data, user0).keySet());
-		System.out.println(list.get(0).getId());
-		Node midNode = (Node) this.getMostOptimizedNodeWithTime(data, user0).keySet().toArray()[0]; // need to have the time to get to midNode -> d1
-		ArrayList<Node> shortestPathFromMidNodeToUser1 = this.getShortestPath(midNode, user1); // midNode is also in the arrayList and user2 is also in it
-		// shortestPathFromMidNodeToUser1 is a ArrayList<Node>  gathering all the nodes to get to user1.
 
-		Double timeFromUser0ToMidNode = this.getMostOptimizedNodeWithTime(data, user0).get(midNode);
+		HashMap<Node,Double> HashMapMidNode = this.getMostOptimizedNodeWithTime(data, user0);
+		Node midNode = (Node) HashMapMidNode.keySet().toArray()[0];
+
+		ArrayList<Node> shortestPathFromMidNodeToUser1 = this.getShortestPath(midNode, user1);
+		// shortestPathFromMidNodeToUser1 is a ArrayList<Node>  gathering all the nodes from midNode to user1.
+		// midNode and user1 are is also in the ArrayList
+
+		Double timeFromUser0ToMidNode = HashMapMidNode.get(midNode);
 		Double timeFromMidNodeToUser1 = 0.0;
-		for(int i = 0; i <shortestPathFromMidNodeToUser1.size()-1; i++) {
+
+		// we calculate the time to get to User1 from midNode by taking the shortest path
+		for(int i = 0; i<shortestPathFromMidNodeToUser1.size()-1; i++) {
 			timeFromMidNodeToUser1 = timeFromMidNodeToUser1 + this.getCommunicationTime(shortestPathFromMidNodeToUser1.get(i).getId(), shortestPathFromMidNodeToUser1.get(i+1).getId());
 		}
 
 		Double deltaMidNodeMin = Math.abs(timeFromUser0ToMidNode - timeFromMidNodeToUser1);
-		ArrayList<Node> nodeToVisit = new ArrayList<Node>();
+		ArrayList<Node> nodeToVisit = new ArrayList<Node>(); // nodeToVisit is an Array of node which has enough capacity to store the data
 		for (Node node: shortestPathFromMidNodeToUser1) {
 			if (node.getAvailableStorage()>=data.getSize()){
 				nodeToVisit.add(node);
 			}
 		}
+
 		if (nodeToVisit.isEmpty()){
 			return midNode;
 		}
-		for (Node node: nodeToVisit) {
-			Node midNode1 = node;
-			for(int i=shortestPathFromMidNodeToUser1.indexOf(midNode); i< shortestPathFromMidNodeToUser1.indexOf(midNode1); i++){
+
+		// we look for the node which is as close to user0 than user1
+		for (Node CurrentNode: nodeToVisit) {
+
+			// we calculate the time to get from the user0 to the currentNode = the time between user0 and MidNode + time between MidNode and CurrentNode
+			for(int i=shortestPathFromMidNodeToUser1.indexOf(midNode); i< shortestPathFromMidNodeToUser1.indexOf(CurrentNode); i++){
 				timeFromUser0ToMidNode = timeFromUser0ToMidNode + this.getCommunicationTime(shortestPathFromMidNodeToUser1.get(i).getId(), shortestPathFromMidNodeToUser1.get(i+1).getId());
 			}
+			// we calculate the time to get from the CurrentNode to User1
 			timeFromMidNodeToUser1 = 0.0;
-			for(int i = shortestPathFromMidNodeToUser1.indexOf(midNode1); i <shortestPathFromMidNodeToUser1.size()-1; i++) {
+			for(int i = shortestPathFromMidNodeToUser1.indexOf(CurrentNode); i <shortestPathFromMidNodeToUser1.size()-1; i++) {
 				timeFromMidNodeToUser1 = timeFromMidNodeToUser1 + this.getCommunicationTime(shortestPathFromMidNodeToUser1.get(i).getId(), shortestPathFromMidNodeToUser1.get(i+1).getId());
 			}
-
+			// if the CurrentNode is closer to the user0 and the user1 than the current midNode, it is the new midNode
 			Double deltaMidNode1 = Math.abs(timeFromUser0ToMidNode - timeFromMidNodeToUser1); // d1:time from user1 to midNode1 and d2 : time from user 2 to midNode2 (WARNING : still the same path)
 			if (deltaMidNode1 < deltaMidNodeMin) {
-				midNode = node;
+				midNode = CurrentNode;
 				deltaMidNodeMin = deltaMidNode1;
 			}
 		}

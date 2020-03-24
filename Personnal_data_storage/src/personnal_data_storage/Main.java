@@ -77,7 +77,17 @@ public class Main {
 		graph.addDataToUser(data1, user1);
 		graph.displayGraph();
 
-		System.out.println(graph.getMostOptimizedNodeForTwoUsers(data2, user1,user2).getId());
+		Node mostOptimizedNodeForTwoUsers = graph.getMostOptimizedNodeForTwoUsers(data2, user1,user2);
+		if (mostOptimizedNodeForTwoUsers != null) {
+			System.out.println("Node :" + mostOptimizedNodeForTwoUsers.getId());
+			user1.addDataId(data2.getId());
+			user2.addDataId(data2.getId());
+			mostOptimizedNodeForTwoUsers.getData().add(data2); // il faut une méthode dans node (ou systemNode) qui ajoute direct la data
+			graph.displayGraph();
+		}else{
+			System.out.println("there is not enough storage");
+		}
+
 }
 
 	public static void question4(){ //knapsack problem
@@ -114,10 +124,10 @@ public class Main {
 //		question2(data);
 
 		// Question 3
-		//question3();
+		question3();
 
 		// Question 4 - Knapsack problem
-		question4();
+		//question4();
 
 	}
 
