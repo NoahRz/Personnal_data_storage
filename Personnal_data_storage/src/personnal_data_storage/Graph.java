@@ -507,54 +507,83 @@ public class Graph {
 		return midNode;
 	}
 
-//	public void addDataToUserOptimized(User user,ArrayList<Data> data) { //knapsack problem
-//		/*
-//		* Algorithm :
-//		* - find the node directly connected to the user, do a knapsack on it.
-//		*  ((check if it has enough space to carry all the dad - Yes : finished
-//		* - No : find the best data (can be several) which can be stored there)) -> not good
-//		* - once finished, look for the closest Node from the user (Djikstra)
-//		* - do the same things for this Node (knapsack)
-//		* - look for the closest from the user (Djikstra)
-//		* - do the same things for this Node (knapsack)
-//		* - etc.
-//		* */
-//		if (this.getAvailableStorage() == 0) {
-//			System.out.println("The data base is full, please add a new system node or delete some data");
-//		}
-//		else {
-//			While (!data.isEmpty()){
-//				SystemNode currentSNode = this.getClosestSNodeFromUserNotYetVisited(user, listNodeToVisit); // peut pas plus optimiser -> prendre le djikstra
-//				currentSNode.addOptimizedData(data);
-//			}
-//		}
-//
-//	}
-
-	// Question 4
-	/**
-	 * Purpose: we want to optimize the adding of a bunch of data to a user using knapsack
-	 * process :
-	 * 1) from the user, we select the closest SystemNode using djiktra
-	 * 2) try to put data using knapsack (in the djikstra algorithm
-	 * 3) repeat step 1 and 2 until we have visited all the SystemNode or all the data have been stored.
-	*/
-
-	public SystemNode getClosestSNodeFromUserNotYetVisited(User user, ArrayList<Data> llistOfData){
-		/**
-		 * return the closest SystemNode to visit from the user which has not been visited yet using djikstra algorithm
+	/*
+	* Question 4
+	* Purpose : add a bunch of data interested by only one user by using knapsack
+	* Process:
+	* 1) find the closest system node to the user
+	* 2) once found, try to add all the data by using knapsack
+	* 3) if there is some data left (couldn't have been added in the systemNode)
+	* 4) find the next closest systemNode and do repeat the process.
+	* */
+	public int addDataUsingKnapSack(ArrayList<Data> listOfData, User user) { //Dijsktra
+		/*
+		 * try to add all the data in the the closest system node from the user using knapsack
+		 * @param ArrayList<Data>: Data
+		 * @param user: User
 		 * */
 
-		return null;
+		ArrayList<Integer> systemNodesToVisitIds = new ArrayList<Integer>();
+		// Array of system node to visit's id
+		for (Node node : nodes) {
+			if (!(node instanceof User)){ // we don't add users because we cannot add data to them
+				systemNodesToVisitIds.add(node.getId());
+			}
+		}
+
+		Map<Integer,Double> communicatingTimeMap = new HashMap<Integer,Double>();
+		// map gathering id of system node and the shortest time to communicate from the user (id, communicatingTime)
+
+		//initializing the hashMap
+		for (Integer snId : systemNodesToVisitIds) {
+			communicatingTimeMap.put(snId, Double.POSITIVE_INFINITY);
+		}
+
+		Integer currentSystemNodeId = user.getReachableSystemNodeId();
+		systemNodesToVisitIds.remove(currentSystemNodeId);
+
+		return this.addDataUsingKnapSackAlgorithm(systemNodesToVisitIds, communicatingTimeMap, currentSystemNodeId, listOfData);
 	}
 
-	public void knapsack(SystemNode sNode,ArrayList<Data> data ){
-		/**
-		 * do the knapsack problem to this snode and return an ArrayList of data which couldn't be added
-		 * @param sNode : SystemNode
-		 * @param data : ArrayList<Data>
-		 */
+	private int addDataUsingKnapSackAlgorithm(ArrayList<Integer> systemNodesToVisitIds, Map<Integer,
+			Double> communicatingTimeMap, Integer currentSystemNodeId, ArrayList<Data> listOfData) {
 
+		ArrayList<Data> UnaddedData = this.getNode(currentSystemNodeId).addOptimizedData(listOfData);
+		if (UnaddedData.isEmpty()) { // if it's true, we succesfully added all the data
+			return 1;
+		}
+		else { // we look for the next closest System node able to store the data.
+			if(systemNodesToVisitIds.isEmpty()) {
+				// if we end up here that means that there sis no systemNode which has enough place to stare the data
+				return 0;
+			}
+			else {
+				//update the communication time from the user to each unvisited system node next to the current system node
+				for (Integer systemNodeNeighbourId: this.getNode(currentSystemNodeId).getReachableNodesIds()) {
+					if (systemNodesToVisitIds.contains(systemNodeNeighbourId)) { // we check for all unvisited neighbour systemNode
+						Double communicatingTime = communicatingTimeMap.get(currentSystemNodeId) + this.getCommunicationTime(currentSystemNodeId, systemNodeNeighbourId);
+						if (communicatingTime < communicatingTimeMap.get(systemNodeNeighbourId)) {
+							communicatingTimeMap.replace(systemNodeNeighbourId, communicatingTime);
+						}
+					}
+				}
+				//find the closest unvisited system node from the user (in time)
+				Double minTime = Double.POSITIVE_INFINITY;
+				Integer closestSystemNodeId = systemNodesToVisitIds.get(0);
+
+				for(Integer systemNodeId:systemNodesToVisitIds) { // To optimize, don't check the index 0
+					if (communicatingTimeMap.get(systemNodeId) < minTime) {
+						minTime = communicatingTimeMap.get(systemNodeId);
+						closestSystemNodeId =  systemNodeId;
+					}
+				}
+				// recursion
+				systemNodesToVisitIds.remove(closestSystemNodeId);
+				currentSystemNodeId = closestSystemNodeId;
+
+				return this.addDataUsingKnapSackAlgorithm(systemNodesToVisitIds, communicatingTimeMap, currentSystemNodeId, UnaddedData);
+			}
+		}
 
 	}
 }

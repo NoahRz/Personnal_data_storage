@@ -69,7 +69,7 @@ public class SystemNode extends Node{
 	}
 
 
-	public void addOptimizedData(ArrayList<Data> listOfData){
+	public ArrayList<Data> addOptimizedData(ArrayList<Data> listOfData){
 		/**
 		 * add a bunch of data by using knapsack problem
 		 * @param listOfData : ArrayList<Data>
@@ -97,13 +97,17 @@ public class SystemNode extends Node{
 				indexMax = resultPathKnapSack.indexOf(path);
 			}
 		}
-
+		ArrayList<Data> unAddedData = new ArrayList<Data>(); // array of data couldn't have been added
 		HashMap<Data, Boolean> dataToAdd = resultPathKnapSack.get(indexMax);
 		for(Data key : dataToAdd.keySet()){
 			if (dataToAdd.get(key)){ // // equals to == true
 				this.getData().add(key);
 			}
+			else{
+				unAddedData.add(key);
+			}
 		}
+		return unAddedData;
 	}
 	public int knapsack(ArrayList<Data> listOfData, int n, int capacity, HashMap<Data, Boolean> prev){
 		/**
@@ -120,7 +124,7 @@ public class SystemNode extends Node{
 				prev = new HashMap<>();
 		}
 		if (n==0 || capacity==0){ // means there we check fot all the data or there is no more space
-			resultPathKnapSack.add(prev); // add the path (binary tree) to a resultPathKnapSack which gather all the paths (possibility
+			this.resultPathKnapSack.add(prev); // add the path (binary tree) to a resultPathKnapSack which gather all the paths (possibility)
 			return 0; // don't think it's necessary to return an integer
 		}
 		else if (listOfData.get(n).getSize()>capacity){
