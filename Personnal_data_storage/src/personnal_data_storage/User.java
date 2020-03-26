@@ -16,6 +16,7 @@ public class User extends Node{
 		return dataIds;
 	}
 
+
 	public int getReachableSystemNodeId() {
 		return reachableSystemNodeId;
 	}
@@ -78,4 +79,7 @@ public class User extends Node{
 		this.dataIds.add(dataId);
 	}
 
+	public ArrayList<Data> addOptimizedData(ArrayList<Data> listOfData, User user) {
+		return null;
+	}
 }

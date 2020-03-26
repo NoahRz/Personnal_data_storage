@@ -95,7 +95,7 @@ public class Graph {
 		 * display the graph (simple display): Node - directly connected Node
 		 * */
 		for (Node node:nodes) {
-			System.out.println("node :" + node.getClass()+ "id : "+ (String)(node.getId() +" " +node.getReachableNodesIds())+ " data : " + node.getDataIds());
+			System.out.println("node :" + node.getClass()+ "id : "+ (String)(node.getId() +" " +node.getReachableNodesIds())+ " data : " + node.getDataIds() + " capacity :" + node.getCapacity());
 		}
 	}
 
@@ -542,14 +542,17 @@ public class Graph {
 		Integer currentSystemNodeId = user.getReachableSystemNodeId();
 		systemNodesToVisitIds.remove(currentSystemNodeId);
 
-		return this.addDataUsingKnapSackAlgorithm(systemNodesToVisitIds, communicatingTimeMap, currentSystemNodeId, listOfData);
+		System.out.println("listOfData : "+ listOfData);
+
+		return this.addDataUsingKnapSackAlgorithm(systemNodesToVisitIds, communicatingTimeMap, currentSystemNodeId, listOfData, user);
 	}
 
 	private int addDataUsingKnapSackAlgorithm(ArrayList<Integer> systemNodesToVisitIds, Map<Integer,
-			Double> communicatingTimeMap, Integer currentSystemNodeId, ArrayList<Data> listOfData) {
+			Double> communicatingTimeMap, Integer currentSystemNodeId, ArrayList<Data> listOfData, User user) {
 
-		ArrayList<Data> UnaddedData = this.getNode(currentSystemNodeId).addOptimizedData(listOfData);
-		if (UnaddedData.isEmpty()) { // if it's true, we succesfully added all the data
+		ArrayList<Data> unaddedData = this.getNode(currentSystemNodeId).addOptimizedData(listOfData,user); // knapsack
+		System.out.println("unaddedData :"+ unaddedData);
+		if (unaddedData.isEmpty()) { // if it's true, we succesfully added all the data
 			return 1;
 		}
 		else { // we look for the next closest System node able to store the data.
@@ -581,7 +584,7 @@ public class Graph {
 				systemNodesToVisitIds.remove(closestSystemNodeId);
 				currentSystemNodeId = closestSystemNodeId;
 
-				return this.addDataUsingKnapSackAlgorithm(systemNodesToVisitIds, communicatingTimeMap, currentSystemNodeId, UnaddedData);
+				return this.addDataUsingKnapSackAlgorithm(systemNodesToVisitIds, communicatingTimeMap, currentSystemNodeId, unaddedData,user);
 			}
 		}
 

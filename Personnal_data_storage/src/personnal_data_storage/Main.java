@@ -101,17 +101,24 @@ public class Main {
 		* Sketch :
 		* weight : in my case it's the size of the data
 		* value : equal one */
-		Data data0 = new Data(-1, -1);
+		//Data data0 = new Data(-1, -1);
 		Data data1 = new Data(2, 1);
 		Data data2 = new Data(4, 2); // notice the the order of data by id (not ascending order)
 		Data data3 = new Data(5,3);
-		ArrayList<Data> data = new ArrayList<>(Arrays.asList(data0, data3, data2, data1));
-		//Graph graph = graph();
-		//graph.addDataToUserOptimized(data); // knapsack problem
+		Data data4 = new Data(7,1);
+		Data data5 = new Data(8,1);
+		Data data6 = new Data(9,1);
+		ArrayList<Data> listOfData = new ArrayList<>(Arrays.asList(data3, data2, data1, data4,data5,data6));
 
-		SystemNode sn = new SystemNode(10, 6);
-		sn.addOptimizedData(data);
-		System.out.println(sn.getData());
+		Graph graph = graph();
+		User user1 = (User)graph.getNode(1);
+		graph.addDataUsingKnapSack(listOfData,user1);
+		graph.displayGraph();
+
+		//marche
+//		SystemNode sn = new SystemNode(10, 10);
+//		sn.addOptimizedData(listOfData,user1);
+//		System.out.println("sn.getData() :" + sn.getData());
 	}
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
@@ -124,10 +131,10 @@ public class Main {
 //		question2(data);
 
 		// Question 3
-		question3();
+		//question3();
 
 		// Question 4 - Knapsack problem
-		//question4();
+		question4();
 
 	}
 
