@@ -108,6 +108,12 @@ public class Main {
 
 		Graph graph = graph();
 		User user1 = (User)graph.getNode(1);
+
+		System.out.println("data to add intereseted by user id:" + user1.getId());
+		for (Data d: listOfData){
+			System.out.println(" data id="+d.getId() + " size: "+ d.getSize());
+		}
+		
 		System.out.println("\ngraph before adding data using knapsack problem :\n");
 		graph.displayGraph();
 		graph.addDataUsingKnapSack(listOfData,user1);
