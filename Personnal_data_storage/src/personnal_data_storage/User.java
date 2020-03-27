@@ -79,7 +79,7 @@ public class User extends Node{
 		this.dataIds.add(dataId);
 	}
 
-	public ArrayList<Data> addOptimizedData(ArrayList<Data> listOfData, User user) {
+	protected ArrayList<Data> addOptimizedData(ArrayList<Data> listOfData, User user) {
 		return null;
 	}
 }

@@ -27,5 +27,5 @@ public abstract class Node {
 	
 	protected abstract ArrayList<Integer> getDataIds();
 
-	public abstract ArrayList<Data> addOptimizedData(ArrayList<Data> listOfData,User user);
+	protected abstract ArrayList<Data> addOptimizedData(ArrayList<Data> listOfData,User user);
 }

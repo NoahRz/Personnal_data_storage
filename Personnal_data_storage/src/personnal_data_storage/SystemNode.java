@@ -69,7 +69,7 @@ public class SystemNode extends Node{
 	}
 
 
-	public ArrayList<Data> addOptimizedData(ArrayList<Data> listOfData, User user){
+	protected ArrayList<Data> addOptimizedData(ArrayList<Data> listOfData, User user){
 		/**
 		 * add a bunch of data by using knapsack problem
 		 * @param listOfData : ArrayList<Data>
