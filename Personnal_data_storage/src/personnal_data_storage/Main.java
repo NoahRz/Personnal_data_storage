@@ -40,26 +40,34 @@ public class Main {
 		Data data1 = new Data(2, 2);
 		Data data2 = new Data(4, 2); // notice the the order of data by id (not ascending order)
 		Data data3 = new Data(5,2);
-		ArrayList<Data> data = new ArrayList<>(Arrays.asList(data3, data2, data1));
+		ArrayList<Data> listOfData = new ArrayList<>(Arrays.asList(data3, data2, data1));
 
 		Graph graph = graph();
 		User user1 = (User)graph.getNode(1);
 
+		System.out.println("data to add intereseted by user id:" + user1.getId());
+		for (Data d: listOfData){
+			System.out.println(" data id="+d.getId() + " size: "+ d.getSize());
+		}
+		System.out.println("\n graph before adding the data :\n");
+		graph.displayGraph();
+		System.out.println("\n");
+
 		ArrayList<Integer> ids = new ArrayList<Integer>(); // ArrayList of data's ids
-		for (Data d: data) {
+		for (Data d: listOfData) {
 			ids.add(d.getId());
 		}
 		// sort the ArrayList of data's ids
 		Collections.sort(ids);
 		
 		for(Integer id:ids) {
-			for(Data d:data) {
+			for(Data d:listOfData) {
 				if (d.getId()==id) {
-					//graph.addData(d);
 					graph.addDataToUser(d, user1);
 				}
 			}
 		}
+		System.out.println("\n graph after adding the data :\n");
 		graph.displayGraph();
 	}
 	
@@ -74,6 +82,7 @@ public class Main {
 		Data data1 = new Data(2, 2);
 		Data data2 = new Data(4, 2);
 		graph.addDataToUser(data1, user1);
+		System.out.println("data id="+data2.getId() + " interested by user id=" +user1.getId() +" and user id=" + user2.getId() );
 		System.out.println("\ngraph before adding the data interested by two users:\n");
 		graph.displayGraph();
 
@@ -113,7 +122,7 @@ public class Main {
 		for (Data d: listOfData){
 			System.out.println(" data id="+d.getId() + " size: "+ d.getSize());
 		}
-		
+
 		System.out.println("\ngraph before adding data using knapsack problem :\n");
 		graph.displayGraph();
 		graph.addDataUsingKnapSack(listOfData,user1);
@@ -127,7 +136,6 @@ public class Main {
 		//question2();
 
 		//question3();
-
 
 		question4(); // Knapsack problem
 
