@@ -3,9 +3,6 @@ package personnal_data_storage;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-/**
- *
- */
 public class SystemNode extends Node{
 	
 	private int capacity;

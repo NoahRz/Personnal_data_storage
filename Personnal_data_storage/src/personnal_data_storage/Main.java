@@ -19,9 +19,6 @@ public class Main {
 		User user1 = new User(1);
 		User user2 = new User(6);
 
-//		Data data1 = new Data(2, 2);
-//		Data data2 = new Data(4, 2);
-
 		graph.addNode(user1);
 		graph.addNode(user2);
 
@@ -101,11 +98,6 @@ public class Main {
 		* the data have to be added the closest to the user
 		* */
 
-		/*
-		* Sketch :
-		* weight : in my case it's the size of the data
-		* value : equal one */
-		//Data data0 = new Data(-1, -1);
 		Data data1 = new Data(2, 1);
 		Data data2 = new Data(4, 2); // notice the the order of data by id (not ascending order)
 		Data data3 = new Data(5,3);

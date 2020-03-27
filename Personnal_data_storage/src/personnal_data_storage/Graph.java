@@ -1,7 +1,6 @@
 package personnal_data_storage;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -147,7 +146,7 @@ public class Graph {
 				System.out.println("Data id=" + data.getId()+ " added succesfully");
 			}
 			else {
-				System.out.println("There is not enough space in any System node available to add the data " + data.getId()+", please add a new one or delete some data");
+				System.out.println("There is not enough space in any System node available to add the data id=" + data.getId()+", please add a new one or delete some data");
 			}
 		}
 	}
