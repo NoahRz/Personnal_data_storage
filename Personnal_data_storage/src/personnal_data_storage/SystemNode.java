@@ -45,7 +45,6 @@ public class SystemNode extends Node{
 	protected void addNode(int nodeId) {
 		// TODO Auto-generated method stub
 		this.reachableNodesIds.add(nodeId);
-		System.out.println("b");
 	}
 
 	@Override
@@ -82,9 +81,6 @@ public class SystemNode extends Node{
 		}
 		this.knapsack(newListOfData, n, capacity, null);
 
-		System.out.println("result path knapsack :" + this.resultPathKnapsack);
-		System.out.println("size reresult path knapsack :" + this.resultPathKnapsack.size());
-
 		int max = 0;
 		int indexMax = 0; // index of the hashMap which has the most "true"
 		for (HashMap<Data, Boolean> path : this.resultPathKnapsack){
@@ -102,7 +98,6 @@ public class SystemNode extends Node{
 		ArrayList<Data> unAddedData = new ArrayList<Data>(); // array of data couldn't have been added
 		HashMap<Data, Boolean> dataToAdd = resultPathKnapsack.get(indexMax);
 
-		System.out.println("data to add :" + dataToAdd);
 		for(Data key : dataToAdd.keySet()){
 			if (dataToAdd.get(key)){ // // equals to == true
 				this.getData().add(key);
@@ -146,7 +141,6 @@ public class SystemNode extends Node{
 			prev0.put(listOfData.get(n), false); // we don't add the data in the systemNode
 			//return this.knapsack(listOfData, n-1, capacity, prev0);
 			this.knapsack(listOfData, n-1, capacity, prev0);
-			System.out.println("prev0 :"+ prev0);
 
 		}
 		else{
@@ -156,7 +150,6 @@ public class SystemNode extends Node{
 			}
 			prev1.put(listOfData.get(n), false); // we don't add the data in the systemNode
 			//int temp1 = this.knapsack(listOfData, n-1, capacity, prev1);
-			System.out.println("prev1 :"+ prev1);
 			this.knapsack(listOfData, n-1, capacity, prev1);
 
 			HashMap<Data, Boolean> prev2 = new HashMap<>();// create a new branch from the previous path
@@ -165,7 +158,6 @@ public class SystemNode extends Node{
 			}
 			prev2.put(listOfData.get(n), true); // we add the data in the systemNode
 			//int temp2 = this.knapsack(listOfData, n-1, capacity - listOfData.get(n).getSize(), prev2); //update the new capacity
-			System.out.println("prev2 :"+ prev2 + " n :" + (n-1) +" capacity : + "+ (capacity - listOfData.get(n).getSize()));
 			this.knapsack(listOfData, n-1, capacity - listOfData.get(n).getSize(), prev2); //update the new capacity
 			//return Math.max(temp1, temp2);
 			//return 0;

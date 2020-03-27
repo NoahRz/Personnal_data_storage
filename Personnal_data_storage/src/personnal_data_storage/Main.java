@@ -19,17 +19,14 @@ public class Main {
 		User user1 = new User(1);
 		User user2 = new User(6);
 
-		Data data1 = new Data(2, 2);
-		Data data2 = new Data(4, 2);
+//		Data data1 = new Data(2, 2);
+//		Data data2 = new Data(4, 2);
 
 		graph.addNode(user1);
 		graph.addNode(user2);
 
 		graph.addNode(sn0);
 		graph.addNode(sn1);
-
-		graph.addData(data1);
-		graph.addData(data2);
 
 		graph.linkNodetoNode(user1.getId(), sn0.getId(), 1);
 		graph.linkNodetoNode(sn0.getId(), sn1.getId(), 1);
@@ -38,11 +35,16 @@ public class Main {
 		return graph;
 	}
 
-	public static void question2(ArrayList<Data> data) {
+	public static void question2() {
 		/**
 		 * Add a bunch of data one by one to a user in the graph 
 		 * param data: ArrayList of Data*/
 		//Initialisation
+		Data data1 = new Data(2, 2);
+		Data data2 = new Data(4, 2); // notice the the order of data by id (not ascending order)
+		Data data3 = new Data(5,2);
+		ArrayList<Data> data = new ArrayList<>(Arrays.asList(data3, data2, data1));
+
 		Graph graph = graph();
 		User user1 = (User)graph.getNode(1);
 
@@ -56,7 +58,7 @@ public class Main {
 		for(Integer id:ids) {
 			for(Data d:data) {
 				if (d.getId()==id) {
-					graph.addData(d);
+					//graph.addData(d);
 					graph.addDataToUser(d, user1);
 				}
 			}
@@ -72,17 +74,19 @@ public class Main {
 		Graph graph = graph();
 		User user1 = (User) graph.getNode(1);
 		User user2 = (User) graph.getNode(6);
-		Data data1 = graph.getData(2);
-		Data data2 = graph.getData(4);
+		Data data1 = new Data(2, 2);
+		Data data2 = new Data(4, 2);
 		graph.addDataToUser(data1, user1);
+		System.out.println("\ngraph before adding the data interested by two users:\n");
 		graph.displayGraph();
 
 		Node mostOptimizedNodeForTwoUsers = graph.getMostOptimizedNodeForTwoUsers(data2, user1,user2);
 		if (mostOptimizedNodeForTwoUsers != null) {
-			System.out.println("Node :" + mostOptimizedNodeForTwoUsers.getId());
+			System.out.println("\nmidNode id:" + mostOptimizedNodeForTwoUsers.getId());
 			user1.addDataId(data2.getId());
 			user2.addDataId(data2.getId());
 			mostOptimizedNodeForTwoUsers.getData().add(data2); // il faut une méthode dans node (ou systemNode) qui ajoute direct la data
+			System.out.println("\ngraph after adding the data interested by two users:\n");
 			graph.displayGraph();
 		}else{
 			System.out.println("there is not enough storage");
@@ -112,7 +116,10 @@ public class Main {
 
 		Graph graph = graph();
 		User user1 = (User)graph.getNode(1);
+		System.out.println("\ngraph before adding data using knapsack problem :\n");
+		graph.displayGraph();
 		graph.addDataUsingKnapSack(listOfData,user1);
+		System.out.println("\ngraph after adding data using knapsack problem :\n");
 		graph.displayGraph();
 
 		//marche
@@ -123,12 +130,8 @@ public class Main {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		
-		//Question 2  Add a bunch of data from arrayList one by one to a user in the graph
-//		Data data1 = new Data(2, 2);
-//		Data data2 = new Data(4, 2); // notice the the order of data by id (not ascending order)
-//		Data data3 = new Data(5,2);
-//		ArrayList<Data> data = new ArrayList<>(Arrays.asList(data3, data2, data1));
-//		question2(data);
+		//Question 2
+		//question2();
 
 		// Question 3
 		//question3();

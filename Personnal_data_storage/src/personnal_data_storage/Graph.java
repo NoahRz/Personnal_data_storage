@@ -8,16 +8,11 @@ import java.util.Map;
 public class Graph {	
 	private ArrayList<Node> nodes;
 	private ArrayList<CommunicationTime> communicationTimes;
-	private ArrayList<Data> data;
 
 	public Graph() {
 		this.nodes = new ArrayList<Node>();
-		this.data = new ArrayList<Data>();
+		//this.data = new ArrayList<Data>();
 		this.communicationTimes = new ArrayList<CommunicationTime>();
-	}
-	
-	public void addData(Data data) {
-		this.data.add(data);
 	}
 	
 	public void addNode(Node node) { // trying to add a node to a user
@@ -82,20 +77,12 @@ public class Graph {
 		return availableStorage;
 	}
 
-	public Data getData(Integer dataId) { //unused
-		for (Data data : data) {
-			if (data.getId() == dataId) {
-				return data;
-			}
-		}
-		return null;
-	}
 	public void displayGraph() {
 		/**
 		 * display the graph (simple display): Node - directly connected Node
 		 * */
 		for (Node node:nodes) {
-			System.out.println("node :" + node.getClass()+ "id : "+ (String)(node.getId() +" " +node.getReachableNodesIds())+ " data : " + node.getDataIds() + " capacity :" + node.getCapacity());
+			System.out.println("node :" + node.getClass()+ ", id : "+ node.getId() +", Reachable node ids : "+ node.getReachableNodesIds()+ ", data : " + node.getDataIds() + ", capacity :" + node.getCapacity());
 		}
 	}
 
@@ -157,10 +144,10 @@ public class Graph {
 			if (node != null){
 				node.getData().add(data); // mettre metode add(data) au systemNode ou User aussi
 				user.addDataId(data.getId());
-				System.out.println("Data added succesfully");
+				System.out.println("Data id=" + data.getId()+ " added succesfully");
 			}
 			else {
-				System.out.println("There is not enough space in any System node available, please add a new one or delete some data");
+				System.out.println("There is not enough space in any System node available to add the data " + data.getId()+", please add a new one or delete some data");
 			}
 		}
 	}
@@ -541,7 +528,6 @@ public class Graph {
 		Integer currentSystemNodeId = user.getReachableSystemNodeId();
 		systemNodesToVisitIds.remove(currentSystemNodeId);
 
-		System.out.println("listOfData : "+ listOfData);
 
 		return this.addDataUsingKnapSackAlgorithm(systemNodesToVisitIds, communicatingTimeMap, currentSystemNodeId, listOfData, user);
 	}
@@ -550,7 +536,6 @@ public class Graph {
 			Double> communicatingTimeMap, Integer currentSystemNodeId, ArrayList<Data> listOfData, User user) {
 
 		ArrayList<Data> unaddedData = this.getNode(currentSystemNodeId).addOptimizedData(listOfData,user); // knapsack
-		System.out.println("unaddedData :"+ unaddedData);
 		if (unaddedData.isEmpty()) { // if it's true, we succesfully added all the data
 			return 1;
 		}
