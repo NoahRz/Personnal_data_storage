@@ -118,14 +118,12 @@ public class Main {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		
-		//Question 2
 		//question2();
 
-		// Question 3
 		//question3();
 
-		// Question 4 - Knapsack problem
-		question4();
+
+		question4(); // Knapsack problem
 
 	}
 
