@@ -125,10 +125,8 @@ public class SystemNode extends Node{
 				prev = new HashMap<>();
 		}
 		if (n==0){ // means there we check fot all the data, we don't check if the current capacity = 0 because we want the entire possibility
-			// for example: if the capacity is equal to 0 but we didn't check all the data, on veut quand même dire qu'on a pas ajouté les autres données {data : false}
-			// donc on continue de parcourir la liste et on aura les data suivant qui ne seaont pas mis
+			// for example: if the capacity is equal to 0 but we didn't check all the data, we want to add that ther other data have not been added {data : false}
 			this.resultPathKnapsack.add(prev); // add the path (binary tree) to a resultPathKnapSack which gather all the paths (possibility)
-			//return 0; // don't think it's necessary to return an integer
 		}
 		else if (listOfData.get(n).getSize()>capacity){
 			HashMap<Data, Boolean> prev0 = new HashMap<>(); // create a new branch from the previous path
@@ -136,7 +134,6 @@ public class SystemNode extends Node{
 				prev0.put(d, prev.get(d));
 			}
 			prev0.put(listOfData.get(n), false); // we don't add the data in the systemNode
-			//return this.knapsack(listOfData, n-1, capacity, prev0);
 			this.knapsack(listOfData, n-1, capacity, prev0);
 
 		}
@@ -146,7 +143,6 @@ public class SystemNode extends Node{
 				prev1.put(d, prev.get(d));
 			}
 			prev1.put(listOfData.get(n), false); // we don't add the data in the systemNode
-			//int temp1 = this.knapsack(listOfData, n-1, capacity, prev1);
 			this.knapsack(listOfData, n-1, capacity, prev1);
 
 			HashMap<Data, Boolean> prev2 = new HashMap<>();// create a new branch from the previous path
@@ -154,10 +150,8 @@ public class SystemNode extends Node{
 				prev2.put(d, prev.get(d));
 			}
 			prev2.put(listOfData.get(n), true); // we add the data in the systemNode
-			//int temp2 = this.knapsack(listOfData, n-1, capacity - listOfData.get(n).getSize(), prev2); //update the new capacity
 			this.knapsack(listOfData, n-1, capacity - listOfData.get(n).getSize(), prev2); //update the new capacity
-			//return Math.max(temp1, temp2);
-			//return 0;
+
 		}
 
 	}

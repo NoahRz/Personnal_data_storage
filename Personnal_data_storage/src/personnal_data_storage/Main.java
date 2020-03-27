@@ -82,7 +82,7 @@ public class Main {
 			System.out.println("\nmidNode id:" + mostOptimizedNodeForTwoUsers.getId());
 			user1.addDataId(data2.getId());
 			user2.addDataId(data2.getId());
-			mostOptimizedNodeForTwoUsers.getData().add(data2); // il faut une méthode dans node (ou systemNode) qui ajoute direct la data
+			mostOptimizedNodeForTwoUsers.getData().add(data2);
 			System.out.println("\ngraph after adding the data interested by two users:\n");
 			graph.displayGraph();
 		}else{
@@ -114,10 +114,6 @@ public class Main {
 		System.out.println("\ngraph after adding data using knapsack problem :\n");
 		graph.displayGraph();
 
-		//marche
-//		SystemNode sn = new SystemNode(10, 10);
-//		sn.addOptimizedData(listOfData,user1);
-//		System.out.println("sn.getData() :" + sn.getData());
 	}
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub

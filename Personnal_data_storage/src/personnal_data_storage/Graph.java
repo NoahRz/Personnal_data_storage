@@ -85,7 +85,7 @@ public class Graph {
 		}
 	}
 
-	public void linkNodetoNode(int nodeId0, int nodeId1, double weightCommunicationTime){	// WARNING : try to replace user and snode with userId and snodeId
+	public void linkNodetoNode(int nodeId0, int nodeId1, double weightCommunicationTime){
 		/**
 		 * link a node to another node and create the link between them (communicationTime)
 		 * @param nodeId0: int
@@ -141,7 +141,7 @@ public class Graph {
 			// Dijkstra
 			Node node = this.getMostOptimizedNode(data, user);
 			if (node != null){
-				node.getData().add(data); // mettre metode add(data) au systemNode ou User aussi
+				node.getData().add(data);
 				user.addDataId(data.getId());
 				System.out.println("Data id=" + data.getId()+ " added succesfully");
 			}
@@ -483,7 +483,7 @@ public class Graph {
 				timeFromMidNodeToUser1 = timeFromMidNodeToUser1 + this.getCommunicationTime(shortestPathFromMidNodeToUser1.get(i).getId(), shortestPathFromMidNodeToUser1.get(i+1).getId());
 			}
 			// if the CurrentNode is closer to the user0 and the user1 than the current midNode, it is the new midNode
-			Double deltaMidNode1 = Math.abs(timeFromUser0ToMidNode - timeFromMidNodeToUser1); // d1:time from user1 to midNode1 and d2 : time from user 2 to midNode2 (WARNING : still the same path)
+			Double deltaMidNode1 = Math.abs(timeFromUser0ToMidNode - timeFromMidNodeToUser1); // d1:time from user1 to midNode1 and d2 : time from user 2 to midNode2
 			if (deltaMidNode1 < deltaMidNodeMin) {
 				midNode = CurrentNode;
 				deltaMidNodeMin = deltaMidNode1;
