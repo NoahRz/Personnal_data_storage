@@ -108,7 +108,7 @@ public class Main {
 		Data data4 = new Data(7,1);
 		Data data5 = new Data(8,1);
 		Data data6 = new Data(9,1);
-		ArrayList<Data> listOfData = new ArrayList<>(Arrays.asList(data3, data2, data1, data4,data5,data6));
+		ArrayList<Data> listOfData = new ArrayList<>(Arrays.asList(data3, data2, data1));
 
 		Graph graph = graph();
 		User user1 = (User)graph.getNode(1);

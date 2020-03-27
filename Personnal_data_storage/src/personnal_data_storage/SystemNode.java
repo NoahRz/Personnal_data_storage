@@ -11,7 +11,7 @@ public class SystemNode extends Node{
 	private int capacity;
 	private ArrayList<Data> data;
 	private ArrayList<Integer> reachableNodesIds; //Node (user or system node)
-	private ArrayList<HashMap<Data, Boolean>> resultPathKnapSack = new ArrayList<>();
+	private ArrayList<HashMap<Data, Boolean>> resultPathKnapsack = new ArrayList<>();
 
 
 	public SystemNode(int id, int capacity) {
@@ -82,12 +82,12 @@ public class SystemNode extends Node{
 		}
 		this.knapsack(newListOfData, n, capacity, null);
 
-		System.out.println("result path knapsack :" + this.resultPathKnapSack);
-		System.out.println("size reresult path knapsack :" + this.resultPathKnapSack.size());
+		System.out.println("result path knapsack :" + this.resultPathKnapsack);
+		System.out.println("size reresult path knapsack :" + this.resultPathKnapsack.size());
 
 		int max = 0;
 		int indexMax = 0; // index of the hashMap which has the most "true"
-		for (HashMap<Data, Boolean> path : this.resultPathKnapSack){
+		for (HashMap<Data, Boolean> path : this.resultPathKnapsack){
 			int cpt= 0;
 			for (Data key : path.keySet()){
 				if (path.get(key)){ // equals to == true
@@ -96,11 +96,11 @@ public class SystemNode extends Node{
 			}
 			if (cpt>=max){
 				max = cpt;
-				indexMax = resultPathKnapSack.indexOf(path);
+				indexMax = resultPathKnapsack.indexOf(path);
 			}
 		}
 		ArrayList<Data> unAddedData = new ArrayList<Data>(); // array of data couldn't have been added
-		HashMap<Data, Boolean> dataToAdd = resultPathKnapSack.get(indexMax);
+		HashMap<Data, Boolean> dataToAdd = resultPathKnapsack.get(indexMax);
 
 		System.out.println("data to add :" + dataToAdd);
 		for(Data key : dataToAdd.keySet()){
@@ -113,12 +113,12 @@ public class SystemNode extends Node{
 			}
 		}
 
-		this.resultPathKnapSack= new ArrayList<HashMap<Data, Boolean>>();
+		this.resultPathKnapsack= new ArrayList<HashMap<Data, Boolean>>();
 		return unAddedData;
 	}
 	public void knapsack(ArrayList<Data> listOfData, int n, int capacity, HashMap<Data, Boolean> prev){
 		/**
-		 * return the best combination of data to add in this system node using knapsack problem
+		 * add all the combination of data to add in this system node using knapsack problem in resultPathKnapsack
 		 * @param listOfData : ArrayList<Data>
 		 * @param n : int, the current index of data in the listOfData
 		 * @param capacity : int the capacity of this systemNode
@@ -135,7 +135,7 @@ public class SystemNode extends Node{
 		if (n==0){ // means there we check fot all the data, we don't check if the current capacity = 0 because we want the entire possibility
 			// for example: if the capacity is equal to 0 but we didn't check all the data, on veut quand même dire qu'on a pas ajouté les autres données {data : false}
 			// donc on continue de parcourir la liste et on aura les data suivant qui ne seaont pas mis
-			this.resultPathKnapSack.add(prev); // add the path (binary tree) to a resultPathKnapSack which gather all the paths (possibility)
+			this.resultPathKnapsack.add(prev); // add the path (binary tree) to a resultPathKnapSack which gather all the paths (possibility)
 			//return 0; // don't think it's necessary to return an integer
 		}
 		else if (listOfData.get(n).getSize()>capacity){
@@ -171,9 +171,5 @@ public class SystemNode extends Node{
 			//return 0;
 		}
 
-	}
-
-	public ArrayList<HashMap<Data, Boolean>> getResultPathKnapSack() {
-		return resultPathKnapSack;
 	}
 }
