@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 public class User extends Node{
 	private ArrayList<Integer> dataIds;
-	private int reachableSystemNodeId = -1 ; // can only communicate with one SystemNode WARNING: c'est oblige que ce soit un int
-	// we put -1 because integer has a default value which is 0 but we start id at 0. 
+	private int reachableSystemNodeId = -1 ; // can only communicate with one SystemNode
+	// we put -1 because Integer has 0 as default value and we want to start id at 0.
 	
 	public User(int id) {
 		super(id);

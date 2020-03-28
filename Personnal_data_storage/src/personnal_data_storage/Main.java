@@ -38,9 +38,9 @@ public class Main {
 		 * param data: ArrayList of Data*/
 		//Initialisation
 		Data data1 = new Data(2, 2);
-		Data data2 = new Data(4, 2); // notice the the order of data by id (not ascending order)
+		Data data2 = new Data(4, 2);
 		Data data3 = new Data(5,2);
-		ArrayList<Data> listOfData = new ArrayList<>(Arrays.asList(data3, data2, data1));
+		ArrayList<Data> listOfData = new ArrayList<>(Arrays.asList(data3, data2, data1)); // notice the the order of data by id (not ascending order)
 
 		Graph graph = graph();
 		User user1 = (User)graph.getNode(1);
@@ -105,6 +105,7 @@ public class Main {
 		* Optimization using Multiple knapsack problem
 		* from a bunch of data interested by one user, find the best place to add the data to maximize the SystemNodes.
 		* the data have to be added the closest to the user
+		* graph : User1 - sn0 - sn1 - user2
 		* */
 
 		Data data1 = new Data(2, 1);

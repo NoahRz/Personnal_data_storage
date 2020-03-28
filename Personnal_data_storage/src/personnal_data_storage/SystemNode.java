@@ -124,9 +124,9 @@ public class SystemNode extends Node{
 		if (prev == null){
 				prev = new HashMap<>();
 		}
-		if (n==0){ // means there we check fot all the data, we don't check if the current capacity = 0 because we want the entire possibility
-			// for example: if the capacity is equal to 0 but we didn't check all the data, we want to add that ther other data have not been added {data : false}
-			this.resultPathKnapsack.add(prev); // add the path (binary tree) to a resultPathKnapSack which gather all the paths (possibility)
+		if (n==0){ // means there we have checked all the data, we don't check if the current capacity = 0 because we want the entire possibility
+			// for example: if the capacity is equal to 0 but we didn't check all the data, we want to add that there are other data which has not been added {data : false}
+			this.resultPathKnapsack.add(prev); // add the path (binary tree) to resultPathKnapSack which gathers all the paths (possibilities)
 		}
 		else if (listOfData.get(n).getSize()>capacity){
 			HashMap<Data, Boolean> prev0 = new HashMap<>(); // create a new branch from the previous path

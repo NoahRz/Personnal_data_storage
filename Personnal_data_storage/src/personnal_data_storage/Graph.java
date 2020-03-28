@@ -10,7 +10,6 @@ public class Graph {
 
 	public Graph() {
 		this.nodes = new ArrayList<Node>();
-		//this.data = new ArrayList<Data>();
 		this.communicationTimes = new ArrayList<CommunicationTime>();
 	}
 	
@@ -121,11 +120,10 @@ public class Graph {
 
 	/**
 	 * Question 2
-	 * the purpose is to add one data on the graph which is only interesting for one user
+	 * the purpose is to add a bunch of data to the graph which is only interesting for one user
 	 * process:
-	 * 1) check if the graph has enough place to stare the data (total amount of all the systemNode)
-	 * 2) look for the systemNode which is the closest to the user and which has enough place to store the data
-	 * 3) add the to the systemNode found and the user (id)
+	 * 1) look for the systemNode which is the closest to the user and which has enough place to store the data
+	 * 2) add the data to the systemNode found and the user (id)
 	 * */
 	public void addDataToUser(Data data, User user) {
 		/**
@@ -133,7 +131,6 @@ public class Graph {
 		 * @param data: Data
 		 * @param user: User
 		 * */
-		// Do I have to check if the data and the user are already in the graph ? 
 		if (this.getAvailableStorage() == 0) {
 			System.out.println("The data base is full, please add a new system node or delete some data");
 		}
@@ -195,13 +192,13 @@ public class Graph {
 			return (this.getNode(currentSystemNodeId));
 		}
 		else if(systemNodesToVisitIds.isEmpty()) {
-			// if we end up here that means that there sis no systemNode which has enough place to stare the data
+			// if we end up here it means that there is no systemNode which has enough place to store the data
 			return null;
 		}
 		else {
 			//update the communication time from the user to each unvisited system node next to the current system node
 			for (Integer systemNodeNeighbourId: this.getNode(currentSystemNodeId).getReachableNodesIds()) {
-				if (systemNodesToVisitIds.contains(systemNodeNeighbourId)) { // we check for all unvisited neighbour systemNode
+				if (systemNodesToVisitIds.contains(systemNodeNeighbourId)) { // we check  all the unvisited neighbour systemNode
 					Double communicatingTime = communicatingTimeMap.get(currentSystemNodeId) + this.getCommunicationTime(currentSystemNodeId, systemNodeNeighbourId);
 					if (communicatingTime < communicatingTimeMap.get(systemNodeNeighbourId)) {
 						communicatingTimeMap.replace(systemNodeNeighbourId, communicatingTime);
@@ -271,9 +268,9 @@ public class Graph {
 	}
 	
 	public HashMap<Node,Double> getMostOptimizedNodeWithTimeAlgorithm(ArrayList<Integer> systemNodesToVisitIds, Map<Integer, Double> communicatingTimeMap,
-			Integer currentSystemNodeId, Data data) { // user parameter is not useful
+			Integer currentSystemNodeId, Data data) {
 		/*
-		 * return the closest node able to store the data and the time connection from the user to the node found by using Djisktra algorithm
+		 * return the closest node able to store the data and the time connection from the user to the node found by using Dijkstra algorithm
 		 *@param systemNodesToVisitIds : ArrayList<Integer>
 		 *@param communicatingTimeMap : Map<Integer, Double>
 		 *@param currentSystemNodeId : Integer
@@ -303,7 +300,7 @@ public class Graph {
 			Double minTime = Double.POSITIVE_INFINITY;
 			Integer closestSystemNodeId = systemNodesToVisitIds.get(0);
 			
-			for(Integer systemNodeId:systemNodesToVisitIds) { // To optimize, don't check the index 0
+			for(Integer systemNodeId:systemNodesToVisitIds) {
 				if (communicatingTimeMap.get(systemNodeId) < minTime) {
 					minTime = communicatingTimeMap.get(systemNodeId);
 					closestSystemNodeId =  systemNodeId;
@@ -328,7 +325,7 @@ public class Graph {
 		ArrayList<Integer> nodesToVisitIds = new ArrayList<Integer>();
 		// Array of system node to visit's id
 		for (Node node1 : nodes) {
-			nodesToVisitIds.add(node1.getId()); // there are also all the users in the ArrayList, but not the startNode
+			nodesToVisitIds.add(node1.getId()); // there are also all the users in the ArrayList
 		}
 		
 		Map<Integer,Double> communicatingTimeMap = new HashMap<Integer,Double>();  
@@ -401,7 +398,7 @@ public class Graph {
 			Double minTime = Double.POSITIVE_INFINITY;
 			Integer closestNodeId = null;
 			
-			for(Integer NodeId:nodesToVisitIds) { // To optimize, don't check the index 0
+			for(Integer NodeId:nodesToVisitIds) {
 				if (communicatingTimeMap.get(NodeId) < minTime) {
 					minTime = communicatingTimeMap.get(NodeId);
 					closestNodeId =  NodeId;
@@ -453,7 +450,7 @@ public class Graph {
 
 		ArrayList<Node> shortestPathFromMidNodeToUser1 = this.getShortestPath(midNode, user1);
 		// shortestPathFromMidNodeToUser1 is a ArrayList<Node>  gathering all the nodes from midNode to user1.
-		// midNode and user1 are is also in the ArrayList
+		// midNode and user1 are also in the ArrayList
 
 		Double timeFromUser0ToMidNode = hashMapMidNode.get(midNode);
 		Double timeFromMidNodeToUser1 = 0.0;
@@ -488,7 +485,7 @@ public class Graph {
 				timeFromMidNodeToUser1 = timeFromMidNodeToUser1 + this.getCommunicationTime(shortestPathFromMidNodeToUser1.get(i).getId(), shortestPathFromMidNodeToUser1.get(i+1).getId());
 			}
 			// if the CurrentNode is closer to the user0 and the user1 than the current midNode, it is the new midNode
-			Double deltaMidNode1 = Math.abs(timeFromUser0ToMidNode - timeFromMidNodeToUser1); // d1:time from user1 to midNode1 and d2 : time from user 2 to midNode2
+			Double deltaMidNode1 = Math.abs(timeFromUser0ToMidNode - timeFromMidNodeToUser1);
 			if (deltaMidNode1 < deltaMidNodeMin) {
 				midNode = CurrentNode;
 				deltaMidNodeMin = deltaMidNode1;
@@ -504,7 +501,7 @@ public class Graph {
 	* 1) find the closest system node to the user
 	* 2) once found, try to add all the data by using knapsack
 	* 3) if there is some data left (couldn't have been added in the systemNode)
-	* 4) find the next closest systemNode and do repeat the process.
+	* 4) find the next closest systemNode and repeat the process.
 	* */
 	public int addDataUsingKnapSack(ArrayList<Data> listOfData, User user) { //Dijsktra
 		/*
@@ -540,12 +537,12 @@ public class Graph {
 			Double> communicatingTimeMap, Integer currentSystemNodeId, ArrayList<Data> listOfData, User user) {
 
 		ArrayList<Data> unaddedData = this.getNode(currentSystemNodeId).addOptimizedData(listOfData,user); // knapsack
-		if (unaddedData.isEmpty()) { // if it's true, we succesfully added all the data
+		if (unaddedData.isEmpty()) { // if it's true, we successfully added all the data
 			return 1;
 		}
 		else { // we look for the next closest System node able to store the data.
 			if(systemNodesToVisitIds.isEmpty()) {
-				// if we end up here that means that there sis no systemNode which has enough place to stare the data
+				// if we end up here that means that there sis no systemNode which has enough place to store the data
 				return 0;
 			}
 			else {
@@ -562,7 +559,7 @@ public class Graph {
 				Double minTime = Double.POSITIVE_INFINITY;
 				Integer closestSystemNodeId = systemNodesToVisitIds.get(0);
 
-				for(Integer systemNodeId:systemNodesToVisitIds) { // To optimize, don't check the index 0
+				for(Integer systemNodeId:systemNodesToVisitIds) {
 					if (communicatingTimeMap.get(systemNodeId) < minTime) {
 						minTime = communicatingTimeMap.get(systemNodeId);
 						closestSystemNodeId =  systemNodeId;
