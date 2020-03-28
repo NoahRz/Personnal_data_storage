@@ -448,14 +448,14 @@ public class Graph {
 		 * */
 
 
-		HashMap<Node,Double> HashMapMidNode = this.getMostOptimizedNodeWithTime(data, user0);
-		Node midNode = (Node) HashMapMidNode.keySet().toArray()[0]; // midNode is the closest node from the two users and  has enough space to store the data
+		HashMap<Node,Double> hashMapMidNode = this.getMostOptimizedNodeWithTime(data, user0);
+		Node midNode = (Node) hashMapMidNode.keySet().toArray()[0]; // midNode is the closest node from the two users and  has enough space to store the data
 
 		ArrayList<Node> shortestPathFromMidNodeToUser1 = this.getShortestPath(midNode, user1);
 		// shortestPathFromMidNodeToUser1 is a ArrayList<Node>  gathering all the nodes from midNode to user1.
 		// midNode and user1 are is also in the ArrayList
 
-		Double timeFromUser0ToMidNode = HashMapMidNode.get(midNode);
+		Double timeFromUser0ToMidNode = hashMapMidNode.get(midNode);
 		Double timeFromMidNodeToUser1 = 0.0;
 
 		// we calculate the time to get to User1 from midNode by taking the shortest path
