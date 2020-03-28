@@ -254,12 +254,17 @@ public class Graph {
 		
 		Map<Integer,Double> communicatingTimeMap = new HashMap<Integer,Double>();  
 		// map gathering id of system node and the shortest time to communicate from the user (id, communicatingTime)
-		
+
+		Integer currentSystemNodeId = user.getReachableSystemNodeId();
+
 		for (Integer snId : systemNodesToVisitIds) {
-			communicatingTimeMap.put(snId, Double.POSITIVE_INFINITY);
+			if (snId == currentSystemNodeId){
+				communicatingTimeMap.put(currentSystemNodeId, this.getCommunicationTime(user.getId(),currentSystemNodeId));
+			}else {
+				communicatingTimeMap.put(snId, Double.POSITIVE_INFINITY);
+			}
 		}
 		
-		Integer currentSystemNodeId = user.getReachableSystemNodeId();
 		systemNodesToVisitIds.remove(currentSystemNodeId);
 		
 		return this.getMostOptimizedNodeWithTimeAlgorithm(systemNodesToVisitIds, communicatingTimeMap, currentSystemNodeId, data);
