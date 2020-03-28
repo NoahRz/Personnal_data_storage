@@ -109,12 +109,12 @@ public class Main {
 		* */
 
 		Data data1 = new Data(2, 1);
-		Data data2 = new Data(4, 2); // notice the the order of data by id (not ascending order)
+		Data data2 = new Data(4, 2);
 		Data data3 = new Data(5,3);
 		Data data4 = new Data(7,1);
 		Data data5 = new Data(8,1);
 		Data data6 = new Data(9,1);
-		ArrayList<Data> listOfData = new ArrayList<>(Arrays.asList(data3, data2, data1));
+		ArrayList<Data> listOfData = new ArrayList<>(Arrays.asList(data3, data2, data1)); // notice the the order of data by id (not ascending order)
 
 		Graph graph = graph();
 		User user1 = (User)graph.getNode(1);
